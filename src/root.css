@@ -1,0 +1,12 @@
+@import 'sanitize.css';
+@import 'sanitize.css/forms.css';
+@import 'sanitize.css/typography.css';
+
+html {
+  background-color: #282c34;
+}
+
+body {
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}

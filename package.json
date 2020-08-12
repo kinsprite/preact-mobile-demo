@@ -1,0 +1,78 @@
+{
+  "name": "react-mobile-demo",
+  "version": "1.2.0",
+  "description": "React mobile demo",
+  "main": "index.js",
+  "module": "src/index.ts",
+  "types": "src/index.ts",
+  "repository": "https://github.com/kinsprite/react-mobile-demo",
+  "author": "kinsprite",
+  "license": "MIT",
+  "engines": {
+    "node": ">=8.10"
+  },
+  "rmfManifest": {
+    "dependencies": [],
+    "renders": [
+      {
+        "renderId": "root",
+        "routePath": "/home",
+        "componentKey": "default"
+      }
+    ],
+    "extra": {}
+  },
+  "scripts": {
+    "start": "node scripts/start.js",
+    "build": "node scripts/build.js",
+    "lint": "yarn run eslint \"./**/*.@(tsx|ts|jsx|js)\""
+  },
+  "browserslist": {
+    "production": [
+      ">0.2%",
+      "not dead",
+      "not op_mini all"
+    ],
+    "development": [
+      "last 1 chrome version",
+      "last 1 firefox version",
+      "last 1 safari version"
+    ]
+  },
+  "peerDependencies": {
+    "@types/jest": "^26.0.0",
+    "@types/node": "^12.0.0",
+    "@types/react": "^16.9.38",
+    "@types/react-dom": "^16.9.8",
+    "@types/react-redux": "^7.1.9",
+    "@types/react-router-dom": "^5.1.5",
+    "react": "^16.13.1",
+    "react-app-polyfill": "^1.0.6",
+    "react-dom": "^16.13.1",
+    "react-redux": "^7.2.0",
+    "react-router-dom": "^5.2.0",
+    "redux": "^4.0.5",
+    "redux-saga": "^1.1.3",
+    "redux-thunk": "^2.3.0",
+    "sanitize.css": "^11.0.1"
+  },
+  "devDependencies": {
+    "@types/jest": "^26.0.0",
+    "@types/node": "^12.0.0",
+    "@types/react": "^16.9.38",
+    "@types/react-dom": "^16.9.8",
+    "@types/react-redux": "^7.1.9",
+    "@types/react-router-dom": "^5.1.5",
+    "react": "^16.13.1",
+    "react-app-polyfill": "^1.0.6",
+    "react-dom": "^16.13.1",
+    "react-micro-frontend-scripts": "3.0.0-b1",
+    "react-redux": "^7.2.0",
+    "react-router-dom": "^5.2.0",
+    "redux": "^4.0.5",
+    "redux-saga": "^1.1.3",
+    "redux-thunk": "^2.3.0",
+    "sanitize.css": "^11.0.1",
+    "workbox-webpack-plugin": "^5.1.3"
+  }
+}
