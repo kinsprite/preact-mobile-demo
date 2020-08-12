@@ -1,5 +1,27 @@
 const scripts = require('react-micro-frontend-scripts');
 
+function getSplitChunksOptions() {
+  return {
+    cacheGroups: {
+      'vendor-polyfill': {
+        test: /[\\/]node_modules[\\/](core-js|object-assign|promise|raf|regenerator-runtime|whatwg-fetch)[\\/]/,
+        name: 'vendor-polyfill',
+        chunks: 'all',
+      },
+      'vendor-react': {
+        test: /[\\/]node_modules[\\/](react|react-dom|react-router-dom)[\\/]/,
+        name: 'vendor-react',
+        chunks: 'all',
+      },
+      'vendor-redux': {
+        test: /[\\/]node_modules[\\/](redux|react-redux|redux-thunk|redux-saga|redux-observable|rxjs)[\\/]/,
+        name: 'vendor-redux',
+        chunks: 'all',
+      },
+    },
+  };
+}
+
 function build() {
   // --- ENV for 'production' only ---
   // process.env.PUBLIC_DISABLE_REVISION = 'true';
@@ -22,6 +44,10 @@ function build() {
 
   scripts.runWebpack(scripts.envProduction, (config) => ({
     ...config,
+    optimization: {
+      ...config.optimization,
+      splitChunks: (process.env.SPLIT_CHUNKS !== 'false') && getSplitChunksOptions(),
+    },
     externals: {
     },
     entry: {
