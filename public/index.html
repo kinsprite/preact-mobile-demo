@@ -15,5 +15,14 @@
       var rmfMetadataJSONP = {apps:[], extra: {}};
       function rmfMetadataCallback(data) { rmfMetadataJSONP = data }
     </script>
+    <script>
+      // Register service worker to control making site work offline
+      if ('serviceWorker' in navigator) {
+        window.addEventListener('load', () => {
+          navigator.serviceWorker.register('/service-worker.js');
+          navigator.serviceWorker.startMessages();
+        });
+      }
+    </script>
   </body>
 </html>

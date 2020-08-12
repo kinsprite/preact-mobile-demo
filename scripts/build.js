@@ -8,7 +8,10 @@ function build() {
   process.env.GENERATE_INDEX_HTML = 'true';
   process.env.GENERATE_SOURCEMAP = 'false';
   // process.env.INLINE_RUNTIME_CHUNK = 'true';
-  // process.env.MINIMIZE_IN_PRODUCTION = 'true';
+  // process.env.MINIMIZE_IN_PRODUCTION = 'false';
+
+  // process.env.WORKBOX_GENERATE_SW = 'true';
+  process.env.WORKBOX_INJECT_MANIFEST = 'true';
 
   // --- ENV for ALL ---
   process.env.ENSURE_NO_EXPORTS = 'true';
