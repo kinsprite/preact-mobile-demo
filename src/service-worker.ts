@@ -4,7 +4,7 @@ import { registerRoute, NavigationRoute, setDefaultHandler } from 'workbox-routi
 import { StaleWhileRevalidate, NetworkFirst, CacheFirst } from 'workbox-strategies';
 import { precache, addRoute } from 'workbox-precaching';
 import { ExpirationPlugin } from 'workbox-expiration';
-import * as navigationPreload from 'workbox-navigation-preload';
+// import * as navigationPreload from 'workbox-navigation-preload';
 
 skipWaiting();
 clientsClaim();
@@ -15,7 +15,7 @@ addRoute();
 //
 // NavigationPreloadManager
 //
-navigationPreload.enable();
+// navigationPreload.enable();
 const networkFirst = new NetworkFirst({ networkTimeoutSeconds: 30 });
 
 const navigationHandler = (params) => {
@@ -59,7 +59,7 @@ registerRoute(
 // Static Resources: scripts and styles
 //
 registerRoute(
-  new RegExp('.+\\.(js|css)$'),
+  /.+\.(js|css)(\?__WB_REVISION__=[0-9a-f]+)?$/,
   new CacheFirst({
     cacheName: 'static-resources',
   }),
@@ -69,7 +69,7 @@ registerRoute(
 // Images Resources
 //
 registerRoute(
-  new RegExp('.+\\.(png|jpg|jpeg|gif)$'),
+  /.+\.(png|jpg|jpeg|gif)(\?__WB_REVISION__=[0-9a-f]+)?$/,
   new CacheFirst({
     cacheName: 'images',
   }),
