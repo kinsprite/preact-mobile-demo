@@ -24,6 +24,19 @@
           navigator.serviceWorker.startMessages();
         });
       }
+
+      if ('Notification' in window) {
+        Notification.requestPermission(function (status) {
+          console.log('Notification permission status:', status);
+          if (Notification.permission == 'granted' && 'serviceWorker' in navigator) {
+            navigator.serviceWorker.ready.then(function (reg) {
+              console.log('Notification serviceWorker ready');
+              // TODO 2.4 - Add 'options' object to configure the notification
+              // reg.showNotification('Hello world!');
+            });
+          }
+        });
+      }
     </script>
   </body>
 </html>

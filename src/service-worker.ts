@@ -4,6 +4,7 @@ import { registerRoute, NavigationRoute, setDefaultHandler } from 'workbox-routi
 import { StaleWhileRevalidate, NetworkFirst, CacheFirst } from 'workbox-strategies';
 import { precache, addRoute } from 'workbox-precaching';
 import { ExpirationPlugin } from 'workbox-expiration';
+import { CacheableResponsePlugin } from 'workbox-cacheable-response';
 // import * as navigationPreload from 'workbox-navigation-preload';
 
 skipWaiting();
@@ -59,7 +60,8 @@ registerRoute(
 // Static Resources: scripts and styles
 //
 registerRoute(
-  /.+\.(js|css)(\?__WB_REVISION__=[0-9a-f]+)?$/,
+  ({ request }) => request.destination === 'script'
+                   || request.destination === 'style',
   new CacheFirst({
     cacheName: 'static-resources',
   }),
@@ -69,11 +71,64 @@ registerRoute(
 // Images Resources
 //
 registerRoute(
-  /.+\.(png|jpg|jpeg|gif)(\?__WB_REVISION__=[0-9a-f]+)?$/,
+  ({ request }) => request.destination === 'image',
   new CacheFirst({
     cacheName: 'images',
+    plugins: [
+      new CacheableResponsePlugin({
+        statuses: [0, 200],
+      }),
+      new ExpirationPlugin({
+        maxEntries: 60,
+        maxAgeSeconds: 30 * 24 * 60 * 60, // 30 Days
+      }),
+    ],
   }),
 );
 
 // Use a stale-while-revalidate strategy for all other requests.
 setDefaultHandler(new NetworkFirst());
+
+//
+// Push
+//
+self.addEventListener('push', (event: PushEvent) => {
+  if (!(self.Notification && self.Notification.permission === 'granted')) {
+    return;
+  }
+
+  let data = {
+    title: null as string,
+    message: null as string,
+  };
+
+  if (event.data) {
+    data = event.data.json();
+  }
+
+  const title = data.title || 'Something Has Happened';
+  const message = data.message || "Here's something you might want to check out.";
+  const icon = 'images/new-notification.png';
+
+  console.log('PUSH ', data);
+
+  ((self as any).registration as ServiceWorkerRegistration).showNotification(title, {
+    body: message,
+    tag: 'simple-push-demo-notification',
+    icon,
+  });
+});
+
+self.addEventListener('notificationclick', (event: NotificationEvent) => {
+  const { notification } = event;
+  notification.close();
+  console.log('On notification click');
+
+  if (notification.tag === 'simple-push-demo-notification') {
+    const clients = (self as any).clients as Clients;
+
+    if (clients.openWindow) {
+      clients.openWindow('/');
+    }
+  }
+});

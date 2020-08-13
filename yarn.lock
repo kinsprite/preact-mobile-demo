@@ -9365,8 +9365,8 @@ workbox-build@^5.1.3:
 
 workbox-cacheable-response@^5.1.3:
   version "5.1.3"
-  resolved "https://registry.npm.taobao.org/workbox-cacheable-response/download/workbox-cacheable-response-5.1.3.tgz?cache=0&sync_timestamp=1595818198437&other_urls=https%3A%2F%2Fregistry.npm.taobao.org%2Fworkbox-cacheable-response%2Fdownload%2Fworkbox-cacheable-response-5.1.3.tgz#79ec05c9f22796833d653e7cad43774a8f8bf7db"
-  integrity sha1-eewFyfInloM9ZT58rUN3So+L99s=
+  resolved "https://registry.yarnpkg.com/workbox-cacheable-response/-/workbox-cacheable-response-5.1.3.tgz#79ec05c9f22796833d653e7cad43774a8f8bf7db"
+  integrity sha512-lOJEwK2T4KWFNdhRFUKxTPBIO5hIYm9E/nYgMq5h/IH3iHPHlBPuFwRMaQy+TTCGWWTA85NomQOjVw1bj65RLw==
   dependencies:
     workbox-core "^5.1.3"
 
