@@ -7420,10 +7420,10 @@ react-is@^16.12.0, react-is@^16.6.0, react-is@^16.7.0, react-is@^16.8.1, react-i
   resolved "https://registry.npm.taobao.org/react-is/download/react-is-16.13.1.tgz#789729a4dc36de2999dc156dd6c1d9c18cea56a4"
   integrity sha1-eJcppNw23imZ3BVt1sHZwYzqVqQ=
 
-react-micro-frontend-scripts@3.0.0-b2:
-  version "3.0.0-b2"
-  resolved "https://registry.yarnpkg.com/react-micro-frontend-scripts/-/react-micro-frontend-scripts-3.0.0-b2.tgz#904ede0b6dfdac969662106b497526bebdbe7857"
-  integrity sha512-tRnm1qg8K25Q5hS/qTCw4gw0aEpKVjuWyyObvzRM4cTgKYMcw4SzoZ2rIKG7pYAN9wA4biHjBYcrF/47Fpfykw==
+react-micro-frontend-scripts@^3.0.0:
+  version "3.0.0"
+  resolved "https://registry.yarnpkg.com/react-micro-frontend-scripts/-/react-micro-frontend-scripts-3.0.0.tgz#62c56088369a46623fdf2ece8b2db283e5913f0f"
+  integrity sha512-VinFb60Xwlv1o+c8kA7yCOcBrtgLSKa5zR3HmzAyeFVv0LsPPy1NVFWa0ASF6PgbtN457D1YbZIW7OZgkHcYAA==
   dependencies:
     "@babel/core" "^7.11.1"
     "@babel/plugin-transform-runtime" "^7.11.0"

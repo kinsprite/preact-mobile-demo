@@ -1,8 +1,8 @@
 /* eslint-disable no-restricted-globals */
 import { skipWaiting, clientsClaim } from 'workbox-core';
 import { registerRoute, NavigationRoute, setDefaultHandler } from 'workbox-routing';
-import { StaleWhileRevalidate, NetworkFirst, CacheFirst } from 'workbox-strategies';
-import { precache, addRoute } from 'workbox-precaching';
+import { NetworkFirst, CacheFirst } from 'workbox-strategies';
+import { precacheAndRoute } from 'workbox-precaching';
 import { ExpirationPlugin } from 'workbox-expiration';
 import { CacheableResponsePlugin } from 'workbox-cacheable-response';
 // import * as navigationPreload from 'workbox-navigation-preload';
@@ -10,19 +10,18 @@ import { CacheableResponsePlugin } from 'workbox-cacheable-response';
 skipWaiting();
 clientsClaim();
 // eslint-disable-next-line no-underscore-dangle
-precache(self.__WB_MANIFEST);
-addRoute();
+precacheAndRoute(self.__WB_MANIFEST);
 
 //
 // NavigationPreloadManager
 //
 // navigationPreload.enable();
-const networkFirst = new NetworkFirst({ networkTimeoutSeconds: 30 });
+const networkFirst = new NetworkFirst({ cacheName: 'navigations', networkTimeoutSeconds: 30 });
 
 const navigationHandler = (params) => {
-  // console.log(`[Service Worker]: nav to ${params.request.url}`);
+  console.log(`[Service Worker]: nav to ${params.request.url}`);
   const spaEntryURL = '/index.html';
-  return networkFirst.handle({ ...params, request: new Request(spaEntryURL) });
+  return networkFirst.handle({ event: params.event, request: new Request(spaEntryURL) });
 };
 
 // Register this strategy to handle all navigations.
@@ -45,7 +44,7 @@ const pwaManifestPaths = new Set([
 registerRoute(
   ({ url }) => url.origin === self.location.origin
              && pwaManifestPaths.has(url.pathname),
-  new StaleWhileRevalidate({
+  new CacheFirst({
     cacheName: 'pwa-manifest',
     plugins: [
       new ExpirationPlugin({
@@ -86,8 +85,19 @@ registerRoute(
   }),
 );
 
-// Use a stale-while-revalidate strategy for all other requests.
-setDefaultHandler(new NetworkFirst());
+// Use a NetworkFirst strategy for all other requests.
+setDefaultHandler(new NetworkFirst({
+  cacheName: 'fallbacks',
+  plugins: [
+    new CacheableResponsePlugin({
+      statuses: [0, 200],
+    }),
+    new ExpirationPlugin({
+      maxEntries: 60,
+      maxAgeSeconds: 30 * 24 * 60 * 60, // 30 Days
+    }),
+  ],
+}));
 
 //
 // Push

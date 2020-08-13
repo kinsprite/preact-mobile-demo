@@ -68,7 +68,7 @@
     "react": "^16.13.1",
     "react-app-polyfill": "^1.0.6",
     "react-dom": "^16.13.1",
-    "react-micro-frontend-scripts": "3.0.0-b2",
+    "react-micro-frontend-scripts": "^3.0.0",
     "react-redux": "^7.2.0",
     "react-router-dom": "^5.2.0",
     "redux": "^4.0.5",
