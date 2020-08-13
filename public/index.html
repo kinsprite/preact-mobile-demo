@@ -19,7 +19,7 @@
       // Register service worker to control making site work offline
       if ('serviceWorker' in navigator) {
         window.addEventListener('load', () => {
-          navigator.serviceWorker.register('/service-worker.js?v=20200812191020');
+          navigator.serviceWorker.register('/service-worker.js?v=1');
           navigator.serviceWorker.startMessages();
         });
       }
