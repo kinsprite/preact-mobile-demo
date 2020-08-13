@@ -1,22 +1,79 @@
+/* eslint-disable no-restricted-globals */
 import { skipWaiting, clientsClaim } from 'workbox-core';
-import { registerRoute } from 'workbox-routing';
-import { StaleWhileRevalidate } from 'workbox-strategies';
-import { precacheAndRoute } from 'workbox-precaching';
+import { registerRoute, NavigationRoute, setDefaultHandler } from 'workbox-routing';
+import { StaleWhileRevalidate, NetworkFirst, CacheFirst } from 'workbox-strategies';
+import { precache, addRoute } from 'workbox-precaching';
+import { ExpirationPlugin } from 'workbox-expiration';
+import * as navigationPreload from 'workbox-navigation-preload';
 
 skipWaiting();
 clientsClaim();
+// eslint-disable-next-line no-underscore-dangle
+precache(self.__WB_MANIFEST);
+addRoute();
 
+//
+// NavigationPreloadManager
+//
+navigationPreload.enable();
+const networkFirst = new NetworkFirst({ networkTimeoutSeconds: 30 });
+
+const navigationHandler = (params) => {
+  // console.log(`[Service Worker]: nav to ${params.request.url}`);
+  const spaEntryURL = '/index.html';
+  return networkFirst.handle({ ...params, request: new Request(spaEntryURL) });
+};
+
+// Register this strategy to handle all navigations.
 registerRoute(
-  ({ url }) => url.origin === 'https://hacker-news.firebaseio.com',
-  new StaleWhileRevalidate(),
+  new NavigationRoute(navigationHandler, {
+    denylist: [/^\/_/, /^\/api/, /\/[^/?]+\.[^/]+$/],
+  }),
 );
 
-// self.addEventListener('push', (event) => {
-//   const title = 'Get Started With Workbox';
-//   const options = {
-//     body: (event as any).data.text(),
-//   };
-//   // event.waitUntil(this.registration.showNotification(title, options));
-// });
+//
+// PWA manifest
+//
+const pwaManifestPaths = new Set([
+  '/favicon.ico',
+  '/logo192.png',
+  '/logo512.png',
+  '/pwa.webmanifest',
+]);
 
-precacheAndRoute(self.__WB_MANIFEST);
+registerRoute(
+  ({ url }) => url.origin === self.location.origin
+             && pwaManifestPaths.has(url.pathname),
+  new StaleWhileRevalidate({
+    cacheName: 'pwa-manifest',
+    plugins: [
+      new ExpirationPlugin({
+        maxEntries: 10,
+        maxAgeSeconds: 15 * 24 * 3600, // 15 Days
+      }),
+    ],
+  }),
+);
+
+//
+// Static Resources: scripts and styles
+//
+registerRoute(
+  new RegExp('.+\\.(js|css)$'),
+  new CacheFirst({
+    cacheName: 'static-resources',
+  }),
+);
+
+//
+// Images Resources
+//
+registerRoute(
+  new RegExp('.+\\.(png|jpg|jpeg|gif)$'),
+  new CacheFirst({
+    cacheName: 'images',
+  }),
+);
+
+// Use a stale-while-revalidate strategy for all other requests.
+setDefaultHandler(new NetworkFirst());

@@ -1,0 +1,19 @@
+function(e) {
+  'use strict';
+  e.skipWaiting(),
+    e.clientsClaim(),
+    e.precacheAndRoute(
+      [
+        { url: '/app.b37fb5fa.css', revision: 'a2dd5bb78e48e2c1e1d62f551c5619b5' },
+        { url: '/app.dd9586d9.js', revision: '5109480cc6b0a312b4c3516faa0eceb7' },
+        { url: '/index.html', revision: '003929f6a672b4296669a04f66067470' },
+        { url: '/vendor-react.89358e23.chunk.js', revision: 'afaad2cf75f9ef43baed97061b3d7b9c' }
+      ],
+      {}
+    ),
+    e.registerRoute(
+      new e.NavigationRoute(e.createHandlerBoundToURL('/index.html'), {
+        denylist: [ /^\/_/, /^\/api/, /\/[^/?]+\.[^/]+$/ ]
+      })
+    );
+}

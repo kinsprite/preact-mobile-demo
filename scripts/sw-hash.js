@@ -23,3 +23,23 @@ fd.on('end', () => {
 
 // read all file and pipe it (write it) to the hash object
 fd.pipe(hash);
+
+// copy files
+const pwaFileNames = [
+  'favicon.ico',
+  'logo192.png',
+  'logo512.png',
+  'pwa.webmanifest',
+];
+
+pwaFileNames.forEach((fileName) => {
+  fs.copyFile(
+    path.join(scripts.paths.public(), fileName),
+    path.join(scripts.paths.prodDist(), fileName),
+    (err) => {
+      if (err) {
+        console.log('Error Found:', err);
+      }
+    },
+  );
+});
