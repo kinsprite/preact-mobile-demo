@@ -1,7 +1,8 @@
-import React, { useState, useEffect } from 'react';
+import { FunctionalComponent, h } from 'preact'; /** @jsx h */
+import { useState, useEffect } from 'preact/hooks';
 import styles from './Counter.module.scss';
 
-function Counter(): JSX.Element {
+const Counter: FunctionalComponent = () => {
   const [count, setCount] = useState(0);
   const [once] = useState(0);
 
@@ -35,6 +36,6 @@ function Counter(): JSX.Element {
       </button>
     </div>
   );
-}
+};
 
 export default Counter;

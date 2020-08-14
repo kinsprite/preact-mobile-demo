@@ -1,6 +1,20 @@
 const scripts = require('react-micro-frontend-scripts');
 
+function getSplitChunksOptions() {
+  return {
+    cacheGroups: {
+      vendor: {
+        test: /[\\/]node_modules[\\/].+[\\/]/,
+        name: 'vendor',
+        chunks: 'all',
+      },
+    },
+  };
+}
+
 function start() {
+  process.env.BROWSERSLIST = scripts.pkgJson.getPkgJson().browserslist.development;
+
   // --- ENV for 'development' only ---
   // process.env.DISABLE_DEV_SERVER = 'true';
 
@@ -11,7 +25,20 @@ function start() {
   // process.env.SPLIT_CHUNKS = 'true';
   // process.env.RUNTIME_CHUNK = 'true';
 
-  scripts.runWebpack(scripts.envDevelopment, scripts.helper.webpackConfigCallback);
+  process.env.PREACT_MOBILE = 'true';
+
+  scripts.runWebpack(scripts.envDevelopment, (config) => ({
+    ...config,
+    optimization: {
+      ...config.optimization,
+      splitChunks: (process.env.SPLIT_CHUNKS !== 'false') && getSplitChunksOptions(),
+    },
+    externals: {
+    },
+    entry: {
+      app: ['preact/debug', scripts.resolvePath('src/index')],
+    },
+  }));
 }
 
 start();

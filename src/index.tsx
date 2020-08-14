@@ -1,17 +1,14 @@
-import React from 'react';
-import ReactDOM from 'react-dom';
+import { h, render } from 'preact'; /** @jsx h */
+import global from 'core-js/internals/global';
+
 import RouterBase from './RouterBase';
 
 import './root.css';
 import nativeMessageHandler from './nativeMessage';
 
-Object.assign(window, {
-  nativeMessageHandler,
-});
+global.nativeMessageHandler = nativeMessageHandler;
 
-ReactDOM.render(
-  <React.StrictMode>
-    <RouterBase />
-  </React.StrictMode>,
+render(
+  <RouterBase />,
   document.getElementById('root'),
 );

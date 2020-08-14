@@ -1,7 +1,6 @@
-import React, { useState, useEffect } from 'react';
-import {
-  NavLink,
-} from 'react-router-dom';
+import { FunctionalComponent, h } from 'preact'; /** @jsx h */
+import { useState, useEffect } from 'preact/hooks';
+import { Link } from 'preact-router/match';
 
 import Counter from './Counter';
 
@@ -22,7 +21,7 @@ function globalTickHandler(msgId: string, payload: any, next?: MessageHandlerNex
 
 addNativeMessageHandler('native_tick', globalTickHandler);
 
-function AppExample(): JSX.Element {
+const AppExample: FunctionalComponent = () => {
   const [count, setCount] = useState(nativeTick);
   const [once] = useState(0);
 
@@ -39,10 +38,10 @@ function AppExample(): JSX.Element {
     <div className={styles.AppExample}>
       <ul>
         <li>
-          <NavLink to="/home" className={styles.AppLink}>Home</NavLink>
+          <Link href="/home" class={styles.AppLink}>Home</Link>
         </li>
         <li>
-          <NavLink to="/app-example" className={styles.AppLink}>App Example</NavLink>
+          <Link href="/app-example" class={styles.AppLink}>App Example</Link>
         </li>
       </ul>
       <p>
@@ -53,6 +52,6 @@ function AppExample(): JSX.Element {
       <Counter />
     </div>
   );
-}
+};
 
 export default AppExample;

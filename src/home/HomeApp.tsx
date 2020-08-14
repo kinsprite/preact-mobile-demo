@@ -1,9 +1,9 @@
-import React, { useState, useEffect } from 'react';
-import {
-  NavLink,
-} from 'react-router-dom';
+import { FunctionalComponent, h } from 'preact'; /** @jsx h */
+import { useState, useEffect } from 'preact/hooks';
+import { Link } from 'preact-router/match';
 
 import styles from './HomeApp.module.css';
+
 import {
   addNativeMessageHandler,
   removeNativeMessageHandler,
@@ -30,7 +30,7 @@ function eventRoundBackHandler(msgId: string, payload): void {
   sendMessageToNative('toast_show', `Home received msg "${msgId}" from native`);
 }
 
-function HomeApp(): JSX.Element {
+const HomeApp : FunctionalComponent = () => {
   const [once] = useState(0);
 
   useEffect(() => {
@@ -39,9 +39,9 @@ function HomeApp(): JSX.Element {
   }, [once]);
 
   return (
-    <div className={styles.App}>
-      <header className={styles.AppHeader}>
-        <div className={styles.BtnGroup}>
+    <div class={styles.App}>
+      <header class={styles.AppHeader}>
+        <div class={styles.BtnGroup}>
           <button type="button" onClick={toastShow}>Toast</button>
           <button type="button" onClick={cameraOpen}>Camera</button>
           <button type="button" onClick={vibratorNotify}>Vibrator</button>
@@ -49,16 +49,16 @@ function HomeApp(): JSX.Element {
         </div>
         <ul>
           <li>
-            <NavLink to="/home" className={styles.AppLink}>Home</NavLink>
+            <Link href="/home" class={styles.AppLink}>Home</Link>
           </li>
           <li>
-            <NavLink to="/app-example" className={styles.AppLink}>App Example</NavLink>
+            <Link href="/app-example" class={styles.AppLink}>App Example</Link>
           </li>
         </ul>
       </header>
-      <footer className={styles.AppFooter}>
+      <footer class={styles.AppFooter}>
         <a
-          className={styles.FooterLink}
+          class={styles.FooterLink}
           href="https://reactjs.org"
           target="_blank"
           rel="noopener noreferrer"
@@ -66,7 +66,7 @@ function HomeApp(): JSX.Element {
           Learn React
         </a>
         <a
-          className={styles.FooterLink}
+          class={styles.FooterLink}
           href="https://qinzhiqiang.cn"
           target="_blank"
           rel="noopener noreferrer"
@@ -76,6 +76,6 @@ function HomeApp(): JSX.Element {
       </footer>
     </div>
   );
-}
+};
 
 export default HomeApp;

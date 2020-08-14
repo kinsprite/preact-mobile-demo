@@ -16,6 +16,8 @@
     "module": "ESNext",
     "target": "ES5",
     "jsx": "react",
+    "jsxFactory": "h",
+    // "jsxFragmentFactory": "Fragment",
     "allowJs": false,
     "importsNotUsedAsValues": "preserve",
     "lib": [

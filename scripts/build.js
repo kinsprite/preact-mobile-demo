@@ -3,18 +3,13 @@ const scripts = require('react-micro-frontend-scripts');
 function getSplitChunksOptions() {
   return {
     cacheGroups: {
-      'vendor-polyfill': {
-        test: /[\\/]node_modules[\\/](core-js|object-assign|promise|raf|regenerator-runtime|whatwg-fetch)[\\/]/,
-        name: 'vendor-polyfill',
-        chunks: 'all',
-      },
-      'vendor-react': {
-        test: /[\\/]node_modules[\\/](react|react-dom|react-router-dom)[\\/]/,
-        name: 'vendor-react',
+      'vendor-preact': {
+        test: /[\\/]node_modules[\\/]preact(-[a-z-]+)?[\\/]/,
+        name: 'vendor-preact',
         chunks: 'all',
       },
       'vendor-redux': {
-        test: /[\\/]node_modules[\\/](redux|react-redux|redux-thunk|redux-saga|redux-observable|rxjs)[\\/]/,
+        test: /[\\/]node_modules[\\/](redux|react-redux|redux-thunk|redux-saga)[\\/]/,
         name: 'vendor-redux',
         chunks: 'all',
       },
@@ -35,7 +30,7 @@ function build() {
   process.env.GENERATE_INDEX_HTML = 'true';
   process.env.GENERATE_SOURCEMAP = 'false';
   // process.env.INLINE_RUNTIME_CHUNK = 'true';
-  // process.env.MINIMIZE_IN_PRODUCTION = 'false';
+  process.env.MINIMIZE_IN_PRODUCTION = 'false';
 
   // process.env.WORKBOX_GENERATE_SW = 'true';
   process.env.WORKBOX_INJECT_MANIFEST = 'true';
@@ -47,6 +42,8 @@ function build() {
   process.env.SPLIT_CHUNKS = 'true';
   process.env.RUNTIME_CHUNK = 'false';
 
+  process.env.PREACT_MOBILE = 'true';
+
   scripts.runWebpack(scripts.envProduction, (config) => ({
     ...config,
     optimization: {
@@ -56,6 +53,7 @@ function build() {
     externals: {
     },
     entry: {
+      polyfill: scripts.resolvePath('src/polyfill'),
       app: scripts.resolvePath('src/index'),
     },
   }));

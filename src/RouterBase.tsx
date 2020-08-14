@@ -1,37 +1,28 @@
-import React from 'react';
-
-import {
-  HashRouter as Router,
-  Switch,
-  Route,
-  Redirect,
-} from 'react-router-dom';
+import { h, FunctionalComponent } from 'preact'; /** @jsx h */
+import { Route, Router, RouterOnChangeArgs } from 'preact-router';
 
 import AppExample from './AppExample';
 import Home from './home';
 import Counter from './Counter';
+import Redirect from './Redirect';
 
-function RouterBase() : JSX.Element {
+const RouterBase : FunctionalComponent = () => {
+  let currentUrl: string;
+
+  const handleRoute = (e: RouterOnChangeArgs) => {
+    currentUrl = e.url;
+    console.log('Current URL: ', currentUrl);
+  };
+
   return (
-    <Router>
-      <Switch>
-        <Route path="/home">
-          <Home />
-        </Route>
-        <Route path="/app-example">
-          <AppExample />
-        </Route>
-        <Route path="/counter">
-          <Counter />
-        </Route>
-        <Route path="*">
-          <Redirect to="/home" />
-        </Route>
-        )
-      </Switch>
+    <Router onChange={handleRoute}>
+      <Route path="/home" component={Home} />
+      <Route path="/app-example" component={AppExample} />
+      <Route path="/counter" component={Counter} />
+      <Redirect default to="/home" />
     </Router>
   );
-}
+};
 
 interface MetaObj {
   description: string;
