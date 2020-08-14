@@ -1,11 +1,11 @@
 {
-  "name": "react-mobile-demo",
+  "name": "preact-mobile-demo",
   "version": "1.2.0",
-  "description": "React mobile demo",
+  "description": "Preact mobile demo",
   "main": "index.js",
   "module": "src/index.ts",
   "types": "src/index.ts",
-  "repository": "https://github.com/kinsprite/react-mobile-demo",
+  "repository": "https://github.com/kinsprite/preact-mobile-demo",
   "author": "kinsprite",
   "license": "MIT",
   "engines": {

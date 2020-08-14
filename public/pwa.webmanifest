@@ -1,6 +1,6 @@
 {
-  "short_name": "React Mobile Demo",
-  "name": "React Mobile Demo",
+  "short_name": "Preact Mobile Demo",
+  "name": "Preact Mobile Demo",
   "icons": [
     {
       "src": "favicon.ico",

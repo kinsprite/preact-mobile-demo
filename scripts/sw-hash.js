@@ -28,6 +28,12 @@ fd.on('end', () => {
     from: /'\/service-worker(\.[0-9a-f]+)?.js(\?v=([0-9a-f]*|null))?'/,
     to: `'/${swFileHashName}'`,
   });
+
+  replaceInFile({
+    files: path.join(scripts.paths.prodDist(), 'rmf-manifest.json'),
+    from: /"\/service-worker(\.[0-9a-f]+)?.js"/,
+    to: `"/${swFileHashName}"`,
+  });
 });
 
 // read all file and pipe it (write it) to the hash object
