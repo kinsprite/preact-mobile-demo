@@ -1,4 +1,4 @@
-/* eslint-disable no-restricted-globals */
+import global from 'core-js/internals/global';
 import { skipWaiting, clientsClaim } from 'workbox-core';
 import { registerRoute, NavigationRoute, setDefaultHandler } from 'workbox-routing';
 import { NetworkFirst, CacheFirst } from 'workbox-strategies';
@@ -7,9 +7,14 @@ import { ExpirationPlugin } from 'workbox-expiration';
 import { CacheableResponsePlugin } from 'workbox-cacheable-response';
 // import * as navigationPreload from 'workbox-navigation-preload';
 
+// polyfill
+if (typeof global.globalThis !== 'object') {
+  global.globalThis = global;
+}
+
 skipWaiting();
 clientsClaim();
-// eslint-disable-next-line no-underscore-dangle
+// eslint-disable-next-line no-restricted-globals, no-underscore-dangle
 precacheAndRoute(self.__WB_MANIFEST);
 
 //
@@ -42,7 +47,7 @@ const pwaManifestPaths = new Set([
 ]);
 
 registerRoute(
-  ({ url }) => url.origin === self.location.origin
+  ({ url }) => url.origin === globalThis.location.origin
              && pwaManifestPaths.has(url.pathname),
   new CacheFirst({
     cacheName: 'pwa-manifest',
@@ -102,8 +107,8 @@ setDefaultHandler(new NetworkFirst({
 //
 // Push
 //
-self.addEventListener('push', (event: PushEvent) => {
-  if (!(self.Notification && self.Notification.permission === 'granted')) {
+globalThis.addEventListener('push', (event: PushEvent) => {
+  if (!(globalThis.Notification && globalThis.Notification.permission === 'granted')) {
     return;
   }
 
@@ -122,20 +127,20 @@ self.addEventListener('push', (event: PushEvent) => {
 
   console.log('PUSH ', data);
 
-  ((self as any).registration as ServiceWorkerRegistration).showNotification(title, {
+  ((globalThis as any).registration as ServiceWorkerRegistration).showNotification(title, {
     body: message,
     tag: 'simple-push-demo-notification',
     icon,
   });
 });
 
-self.addEventListener('notificationclick', (event: NotificationEvent) => {
+globalThis.addEventListener('notificationclick', (event: NotificationEvent) => {
   const { notification } = event;
   notification.close();
   console.log('On notification click');
 
   if (notification.tag === 'simple-push-demo-notification') {
-    const clients = (self as any).clients as Clients;
+    const clients = (globalThis as any).clients as Clients;
 
     if (clients.openWindow) {
       clients.openWindow('/');
