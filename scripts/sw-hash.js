@@ -25,8 +25,13 @@ fd.on('end', () => {
 
   replaceInFile({
     files: path.join(scripts.paths.prodDist(), 'index.html'),
-    from: /'\/service-worker(\.[0-9a-f]+)?.js(\?v=([0-9a-f]*|null))?'/,
-    to: `'/${swFileHashName}'`,
+    from: 'if (\'serviceWorker\' in navigator) {}',
+    to: `if ('serviceWorker' in navigator) {
+      window.addEventListener('load', function () {
+        navigator.serviceWorker.register('/${swFileHashName}');
+        navigator.serviceWorker.startMessages();
+      });
+    }`,
   });
 
   replaceInFile({
