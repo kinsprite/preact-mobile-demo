@@ -32,6 +32,7 @@ function readIndexHtml() {
 }
 
 const indexHtml = readIndexHtml();
+const appHtmlMinSize = '<div id="root"></div>'.length;
 
 /**
  * render HTML
@@ -44,9 +45,9 @@ function renderHtml(req, res) {
   global.history = {};
   global.location = { ...URL.parse(url) };
 
-  const appHtml = renderToString(preact.h(App, { url }));
+  const appHtml = renderToString(preact.h(App, { url })) || '';
 
-  if (!appHtml) {
+  if (appHtml.length <= appHtmlMinSize) {
     // default route
     res.writeHead(302, {
       Location: '/home',

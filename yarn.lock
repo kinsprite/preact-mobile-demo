@@ -7324,10 +7324,10 @@ react-is@^16.12.0, react-is@^16.7.0, react-is@^16.8.1, react-is@^16.9.0:
   resolved "https://registry.npm.taobao.org/react-is/download/react-is-16.13.1.tgz#789729a4dc36de2999dc156dd6c1d9c18cea56a4"
   integrity sha1-eJcppNw23imZ3BVt1sHZwYzqVqQ=
 
-react-micro-frontend-scripts@^3.1.0:
-  version "3.1.0"
-  resolved "https://registry.yarnpkg.com/react-micro-frontend-scripts/-/react-micro-frontend-scripts-3.1.0.tgz#4cae70044173b40f8c02f9e4ff5ba52bb3c593e1"
-  integrity sha512-N4evcO50XdxZzeAhmMn6lZY0m/Ucj4Mdt2yuMXWloaRS8JT1RiXCk4qJRZZghyzE2x405QBaI3NYrkVjZUzlfA==
+react-micro-frontend-scripts@^3.2.0:
+  version "3.2.0"
+  resolved "https://registry.yarnpkg.com/react-micro-frontend-scripts/-/react-micro-frontend-scripts-3.2.0.tgz#6e474426ac758411b4b78a88685cabd60c1ac8ec"
+  integrity sha512-LR5pbpnUMWC5VRYh473KEKVm+8m0SJ3wbjcEhtuaUNQFu9jn6zg67buVo/cmWyMgzSAwBxVfiOuvtBvpgp/RWg==
   dependencies:
     "@babel/core" "^7.11.1"
     "@babel/plugin-transform-runtime" "^7.11.0"
@@ -7931,20 +7931,10 @@ serve-index@^1.9.1:
     mime-types "~2.1.17"
     parseurl "~1.3.2"
 
-serve-static@1.14.1:
+serve-static@1.14.1, serve-static@^1.14.1:
   version "1.14.1"
   resolved "https://registry.npm.taobao.org/serve-static/download/serve-static-1.14.1.tgz#666e636dc4f010f7ef29970a88a674320898b2f9"
   integrity sha1-Zm5jbcTwEPfvKZcKiKZ0MgiYsvk=
-  dependencies:
-    encodeurl "~1.0.2"
-    escape-html "~1.0.3"
-    parseurl "~1.3.3"
-    send "0.17.1"
-
-serve-static@^1.14.1:
-  version "1.14.1"
-  resolved "https://registry.yarnpkg.com/serve-static/-/serve-static-1.14.1.tgz#666e636dc4f010f7ef29970a88a674320898b2f9"
-  integrity sha512-JMrvUwE54emCYWlTI+hGrGv5I8dEwmco/00EvkzIIsR7MqrHonbD9pO2MOfFnpFntl7ecpZs+3mW+XbQZu9QCg==
   dependencies:
     encodeurl "~1.0.2"
     escape-html "~1.0.3"

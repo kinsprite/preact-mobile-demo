@@ -1,9 +1,11 @@
 import global from 'core-js/internals/global';
-import { skipWaiting, clientsClaim } from 'workbox-core';
-import { registerRoute, NavigationRoute, setDefaultHandler } from 'workbox-routing';
-import { NetworkFirst, CacheFirst } from 'workbox-strategies';
-import { precacheAndRoute } from 'workbox-precaching';
+import { clientsClaim, skipWaiting } from 'workbox-core';
+import { NavigationRoute, registerRoute, setDefaultHandler } from 'workbox-routing';
+import {
+  CacheFirst, CacheOnly, NetworkFirst, NetworkOnly,
+} from 'workbox-strategies';
 import { ExpirationPlugin } from 'workbox-expiration';
+import { precacheAndRoute } from 'workbox-precaching';
 import { CacheableResponsePlugin } from 'workbox-cacheable-response';
 // import * as navigationPreload from 'workbox-navigation-preload';
 
@@ -12,27 +14,55 @@ if (typeof global.globalThis !== 'object') {
   global.globalThis = global;
 }
 
+// eslint-disable-next-line no-restricted-globals, no-underscore-dangle
+const manifests: {revision: string, url: string}[] = self.__WB_MANIFEST;
+const spaHtmlURL = '/index.html';
+
 skipWaiting();
 clientsClaim();
-// eslint-disable-next-line no-restricted-globals, no-underscore-dangle
-precacheAndRoute(self.__WB_MANIFEST);
+precacheAndRoute(manifests.filter((item) => item.url !== spaHtmlURL));
+
+const spaHtmlItems = manifests.filter((item) => item.url === spaHtmlURL);
+const spaHtmlWithRev = `${spaHtmlURL}?v=${spaHtmlItems.length && spaHtmlItems[0].revision}`;
 
 //
 // NavigationPreloadManager
 //
 // navigationPreload.enable();
-const networkFirst = new NetworkFirst({ cacheName: 'navigations', networkTimeoutSeconds: 30 });
+const navNetworkOnly = new NetworkOnly();
+const navNetworkFirst = new NetworkFirst({ cacheName: 'navigations', networkTimeoutSeconds: 5 });
 
-const navigationHandler = (params) => {
-  console.log(`[Service Worker]: nav to ${params.request.url}`);
-  const spaEntryURL = '/index.html';
-  return networkFirst.handle({ event: params.event, request: new Request(spaEntryURL) });
+const navigationHandler = async ({ event, request }) => {
+  const { url } = request;
+  console.log(`[Service Worker]: nav to ${url}`);
+
+  try {
+    return await navNetworkOnly.handle({ event, request });
+  } catch (e) {
+    return navNetworkFirst.handle({ event, request: new Request(spaHtmlWithRev) });
+  }
 };
+
+// cache SPA's index.html
+globalThis.addEventListener('install', (event: ExtendableEvent) => {
+  event.waitUntil(navNetworkFirst.handle({ request: new Request(spaHtmlWithRev) }));
+});
+
+globalThis.addEventListener('activate', () => {
+  const cacheOnly = new CacheOnly({ cacheName: 'navigations' });
+
+  cacheOnly.handle({ request: new Request(spaHtmlWithRev) }).catch(() => {
+    const timerId = globalThis.setTimeout(() => {
+      navNetworkFirst.handle({ request: new Request(spaHtmlWithRev) });
+      globalThis.clearTimeout(timerId);
+    }, 3000);
+  });
+});
 
 // Register this strategy to handle all navigations.
 registerRoute(
   new NavigationRoute(navigationHandler, {
-    denylist: [/^\/_/, /^\/api/, /\/[^/?]+\.[^/]+$/],
+    denylist: [/^\/_/, /^\/api/, /^\/rest/, /\/[^/?]+\.[^/]+$/],
   }),
 );
 
