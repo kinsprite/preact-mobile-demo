@@ -62,7 +62,7 @@ function nativeMessageHandler(msgId: string, payload: string | null | undefined)
     try {
       payloadObj = JSON.parse(payload);
     } catch (e) {
-      console.error(`[ERROR]: Native Message "${msgId}", invalid JSON payload `, e);
+      console.error(`[ERROR]: Native Message "${msgId}", invalid JSON payload `, e); // eslint-disable-line
     }
   }
 
@@ -90,7 +90,7 @@ function nativeMessageHandler(msgId: string, payload: string | null | undefined)
 }
 
 function logMessageToNative(msgId: string, payload: string): void {
-  console.info(`[INFO] Message "${msgId}" to native, payload: ${payload}`);
+  console.info(`[INFO] Message "${msgId}" to native, payload: ${payload}`); // eslint-disable-line
 }
 
 const msgLogger = {

@@ -1,11 +1,13 @@
 import { h, FunctionalComponent } from 'preact'; /** @jsx h */
 import { Route, Router, RouterOnChangeArgs } from 'preact-router';
-
 import { Provider } from 'react-redux';
+
 import AppExample from './AppExample';
 import Home from './home';
 import Counter from './Counter';
+import UserContainer from './contianers/UserContainer';
 import Redirect from './Redirect';
+
 import { createStore } from './store';
 import reducers from './redux/reducers';
 
@@ -16,7 +18,7 @@ const AppContainer : FunctionalComponent<Props> = ({ preloadedState }: Props) =>
 
   const handleRoute = (e: RouterOnChangeArgs) => {
     currentUrl = e.url;
-    console.log('Current URL: ', currentUrl);
+    console.log('Current URL: ', currentUrl);  // eslint-disable-line
   };
 
   const store = createStore(reducers, preloadedState);
@@ -28,6 +30,7 @@ const AppContainer : FunctionalComponent<Props> = ({ preloadedState }: Props) =>
           <Route path="/home" component={Home} />
           <Route path="/app-example" component={AppExample} />
           <Route path="/counter" component={Counter} />
+          <Route path="/user" component={UserContainer} />
           <Redirect default to="/home" />
         </Router>
       </Provider>

@@ -1,5 +1,6 @@
 .tmp/
 coverage/
 dist/
+dist-ssr/
 node_modules/
 

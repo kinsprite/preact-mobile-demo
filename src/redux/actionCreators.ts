@@ -18,3 +18,7 @@ export function setAge(age) {
     age,
   };
 }
+
+export function resetAge() {
+  return setAge(18);
+}

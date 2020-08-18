@@ -3,6 +3,7 @@ module.exports = {
     'react-micro-frontend-scripts/lints/eslintReactTS',
   ].map(require.resolve),
   rules: {
+    '@typescript-eslint/no-unused-vars': ['warn', { args: 'none' }],
     '@typescript-eslint/no-explicit-any': 'off',
     '@typescript-eslint/explicit-module-boundary-types': 'off',
     'react/react-in-jsx-scope': 'off',

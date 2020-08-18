@@ -34,7 +34,7 @@ const navNetworkFirst = new NetworkFirst({ cacheName: 'navigations', networkTime
 
 const navigationHandler = async ({ event, request }) => {
   const { url } = request;
-  console.log(`[Service Worker]: nav to ${url}`);
+  console.log(`[Service Worker]: nav to ${url}`);  // eslint-disable-line
 
   try {
     return await navNetworkOnly.handle({ event, request });
@@ -155,7 +155,7 @@ globalThis.addEventListener('push', (event: PushEvent) => {
   const message = data.message || "Here's something you might want to check out.";
   const icon = 'images/new-notification.png';
 
-  console.log('PUSH ', data);
+  console.log('PUSH ', data);  // eslint-disable-line
 
   ((globalThis as any).registration as ServiceWorkerRegistration).showNotification(title, {
     body: message,
@@ -167,7 +167,7 @@ globalThis.addEventListener('push', (event: PushEvent) => {
 globalThis.addEventListener('notificationclick', (event: NotificationEvent) => {
   const { notification } = event;
   notification.close();
-  console.log('On notification click');
+  console.log('On notification click');  // eslint-disable-line
 
   if (notification.tag === 'simple-push-demo-notification') {
     const clients = (globalThis as any).clients as Clients;

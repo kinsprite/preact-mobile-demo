@@ -54,6 +54,12 @@ const HomeApp : FunctionalComponent = () => {
           <li>
             <Link href="/app-example" class={styles.AppLink}>App Example</Link>
           </li>
+          <li>
+            <Link href="/counter" class={styles.AppLink}>Counter</Link>
+          </li>
+          <li>
+            <Link href="/user" class={styles.AppLink}>User</Link>
+          </li>
         </ul>
       </header>
       <footer class={styles.AppFooter}>
