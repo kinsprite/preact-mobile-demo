@@ -35,6 +35,14 @@ function start() {
     },
     externals: {
     },
+    resolve: {
+      ...config.resolve,
+      alias: {
+        react: 'preact/compat',
+        'react-dom/test-utils': 'preact/test-utils',
+        'react-dom': 'preact/compat',
+      },
+    },
     entry: {
       app: ['preact/debug', scripts.resolvePath('src/index')],
     },

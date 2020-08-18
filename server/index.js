@@ -9,11 +9,11 @@ const URL = require('url');
 const preact = require('preact');
 const renderToString = require('preact-render-to-string');
 
-const manifestJson = require(path.resolve('./dist/rmf-manifest.json'));
 const ssrModule = require(path.resolve('./dist-ssr/ssr.js'));
+const db = require('./db');
 
 const indexFile = path.resolve('./dist/index.html');
-const App = (ssrModule && ssrModule.default) || ssrModule;
+const AppContainer = (ssrModule && ssrModule.default) || ssrModule;
 
 function readIndexHtml() {
   const result = fs.readFileSync(indexFile, 'utf8');
@@ -44,8 +44,9 @@ function renderHtml(req, res) {
 
   global.history = {};
   global.location = { ...URL.parse(url) };
+  const backendData = db.getInitData();
 
-  const appHtml = renderToString(preact.h(App, { url })) || '';
+  const appHtml = renderToString(preact.h(AppContainer, { url, preloadedState: backendData })) || '';
 
   if (appHtml.length <= appHtmlMinSize) {
     // default route
@@ -54,9 +55,10 @@ function renderHtml(req, res) {
     });
     res.end();
   } else {
-    const data = encodeURI(JSON.stringify({ preRenderData: { url } }));
-    const dataHtml = `<script type="__PREACT_CLI_DATA__">${data}</script>`;
-    const html = indexHtml.replace('<div id="root"></div>', dataHtml + appHtml);
+    const cliData = encodeURI(JSON.stringify({ preRenderData: { url } }));
+    const cliDataHtml = `<script type="__PREACT_CLI_DATA__">${cliData}</script>`;
+    const backendDataHtml = `<script>window.__BACKEND_DATA__ = ${JSON.stringify(backendData)};</script>`;
+    const html = indexHtml.replace('<div id="root"></div>', cliDataHtml + backendDataHtml + appHtml);
     res.write(html);
     res.end();
   }

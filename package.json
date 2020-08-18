@@ -3,7 +3,7 @@
   "name": "preact-mobile-demo",
   "version": "1.0.0",
   "description": "Preact mobile demo",
-  "main": "index.js",
+  "main": "server/index.js",
   "module": "src/index.ts",
   "types": "src/index.ts",
   "repository": "https://github.com/kinsprite/preact-mobile-demo",
@@ -29,7 +29,7 @@
     "build": "node scripts/build.js",
     "build-ssr": "node scripts/build-ssr.js",
     "sw-hash": "node scripts/sw-hash.js",
-    "ssr": "node index.js",
+    "ssr": "node server/index.js",
     "lint": "yarn run eslint \"./**/*.@(tsx|ts|jsx|js)\""
   },
   "browserslist": {

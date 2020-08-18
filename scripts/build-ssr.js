@@ -53,6 +53,14 @@ function build() {
     externals: {
       preact: 'preact',
     },
+    resolve: {
+      ...config.resolve,
+      alias: {
+        react: 'preact/compat',
+        'react-dom/test-utils': 'preact/test-utils',
+        'react-dom': 'preact/compat',
+      },
+    },
     entry: {
       // polyfill: scripts.resolvePath('src/polyfill'),
       // app: scripts.resolvePath('src/index'),

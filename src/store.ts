@@ -1,7 +1,7 @@
 // redux store
 
 import {
-  createStore, applyMiddleware, compose,
+  createStore as createStoreOriginal, applyMiddleware, compose,
 } from 'redux';
 import thunk from 'redux-thunk';
 import createSagaMiddleware from 'redux-saga';
@@ -23,13 +23,19 @@ const enhancer = composeEnhancers(
   // other store enhancers if any
 );
 
-const store = {
-  ...createStore((state) => state, enhancer),
-  runSaga: sagaMiddleware.run,
-  // runEpic: epicMiddleware.run,
-};
+let globalStore: any;
+
+export function createStore(reducer: any, preloadedState?: any) {
+  const store = {
+    ...createStoreOriginal(reducer, preloadedState, enhancer),
+    runSaga: sagaMiddleware.run,
+    // runEpic: epicMiddleware.run,
+  };
+  globalStore = store;
+  return store;
+}
 
 // eslint-disable-next-line
 export function getStore() {
-  return store;
+  return globalStore;
 }
