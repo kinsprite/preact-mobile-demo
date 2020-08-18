@@ -4,6 +4,7 @@ const http = require('http');
 const path = require('path');
 
 const connect = require('connect');
+const compression = require('compression');
 const serveStatic = require('serve-static');
 const URL = require('url');
 const preact = require('preact');
@@ -59,6 +60,7 @@ function renderHtml(req, res) {
     const cliDataHtml = `<script type="__PREACT_CLI_DATA__">${cliData}</script>`;
     const backendDataHtml = `<script>window.__BACKEND_DATA__ = ${JSON.stringify(backendData)};</script>`;
     const html = indexHtml.replace('<div id="root"></div>', cliDataHtml + backendDataHtml + appHtml);
+    res.setHeader('Content-Type', 'text/html; charset=utf-8');
     res.write(html);
     res.end();
   }
@@ -66,6 +68,7 @@ function renderHtml(req, res) {
 
 const app = connect();
 
+app.use(compression());
 app.use(serveStatic('dist', { index: false }));
 app.use(serveStatic('public', { index: false }));
 
