@@ -1,5 +1,7 @@
 import { combineReducers } from 'redux';
-import { INCREMENT, DECREMENT, RESET } from './actionTypes';
+import {
+  INCREMENT, DECREMENT, RESET, SET_BOOKS,
+} from './actionTypes';
 
 function age(state = 0, action) {
   switch (action.type) {
@@ -18,9 +20,19 @@ function name(state = '', action) {
   return state;
 }
 
+function books(state = [], action) {
+  switch (action.type) {
+    case SET_BOOKS:
+      return action.payload || [];
+    default:
+      return state;
+  }
+}
+
 const reducers = combineReducers({
   age,
   name,
+  books,
 });
 
 export default reducers;

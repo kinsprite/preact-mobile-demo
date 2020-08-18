@@ -55,10 +55,10 @@ const HomeApp : FunctionalComponent = () => {
             <Link href="/app-example" class={styles.AppLink}>App Example</Link>
           </li>
           <li>
-            <Link href="/counter" class={styles.AppLink}>Counter</Link>
+            <Link href="/user" class={styles.AppLink}>User</Link>
           </li>
           <li>
-            <Link href="/user" class={styles.AppLink}>User</Link>
+            <Link href="/books" class={styles.AppLink}>Books</Link>
           </li>
         </ul>
       </header>

@@ -1,4 +1,7 @@
-import { INCREMENT, DECREMENT, RESET } from './actionTypes';
+import {
+  INCREMENT, DECREMENT, RESET,
+  SET_BOOKS, RELOAD_BOOKS,
+} from './actionTypes';
 
 export function increaseAge() {
   return {
@@ -21,4 +24,21 @@ export function setAge(age) {
 
 export function resetAge() {
   return setAge(18);
+}
+
+export function setBooks(books) {
+  return {
+    type: SET_BOOKS,
+    payload: books,
+  };
+}
+
+export function reloadBooks() {
+  return {
+    type: RELOAD_BOOKS,
+  };
+}
+
+export function clearBooks() {
+  return setBooks([]);
 }

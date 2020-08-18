@@ -9,9 +9,12 @@ const serveStatic = require('serve-static');
 const URL = require('url');
 const preact = require('preact');
 const renderToString = require('preact-render-to-string');
+const bodyParser = require('body-parser');
+
+const rest = require('./rest');
+const db = require('./db');
 
 const ssrModule = require(path.resolve('./dist-ssr/ssr.js'));
-const db = require('./db');
 
 const indexFile = path.resolve('./dist/index.html');
 const AppContainer = (ssrModule && ssrModule.default) || ssrModule;
@@ -71,6 +74,9 @@ const app = connect();
 app.use(compression());
 app.use(serveStatic('dist', { index: false }));
 app.use(serveStatic('public', { index: false }));
+app.use(bodyParser.urlencoded({ extended: true }));
+app.use(bodyParser.json());
+app.use(rest.processRequest());
 
 // respond to all requests
 app.use(renderHtml);
