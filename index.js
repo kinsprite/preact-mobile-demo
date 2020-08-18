@@ -5,13 +5,17 @@ const path = require('path');
 
 const connect = require('connect');
 const serveStatic = require('serve-static');
+const URL = require('url');
+const preact = require('preact');
+const renderToString = require('preact-render-to-string');
 
 const manifestJson = require(path.resolve('./dist/rmf-manifest.json'));
+const ssrModule = require(path.resolve('./dist-ssr/ssr.js'));
 
-const runSSR = require(path.resolve(path.join('./dist', manifestJson.files['ssr.js'])));
+const indexFile = path.resolve('./dist/index.html');
+const App = (ssrModule && ssrModule.default) || ssrModule;
 
 function readIndexHtml() {
-  const indexFile = path.resolve('./public/index.html');
   const result = fs.readFileSync(indexFile, 'utf8');
 
   if (result) {
@@ -29,20 +33,29 @@ function readIndexHtml() {
 
 const indexHtml = readIndexHtml();
 
+/**
+ * render HTML
+ * @param {http.IncomingMessage} req
+ * @param {http.ServerResponse} res
+ */
 function renderHtml(req, res) {
-  // This context object contains the results of the render
-  const context = {};
-  const html = runSSR.default({
-    context, req, indexHtml, manifestJson,
-  });
+  const url = req.url || '/';
 
-  // context.url will contain the URL to redirect to if a <Redirect> was used
-  if (context.url) {
+  global.history = {};
+  global.location = { ...URL.parse(url) };
+
+  const appHtml = renderToString(preact.h(App, { url }));
+
+  if (!appHtml) {
+    // default route
     res.writeHead(302, {
-      Location: context.url,
+      Location: '/home',
     });
     res.end();
   } else {
+    const data = encodeURI(JSON.stringify({ preRenderData: { url } }));
+    const dataHtml = `<script type="__PREACT_CLI_DATA__">${data}</script>`;
+    const html = indexHtml.replace('<div id="root"></div>', dataHtml + appHtml);
     res.write(html);
     res.end();
   }

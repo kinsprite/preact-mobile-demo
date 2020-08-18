@@ -1,6 +1,7 @@
 {
+  "private": true,
   "name": "preact-mobile-demo",
-  "version": "1.2.0",
+  "version": "1.0.0",
   "description": "Preact mobile demo",
   "main": "index.js",
   "module": "src/index.ts",
@@ -24,9 +25,11 @@
   },
   "scripts": {
     "start": "node scripts/start.js",
-    "build-all": "yarn build && yarn sw-hash",
     "build": "node scripts/build.js",
+    "build-all": "yarn build && yarn sw-hash && yarn build-ssr",
+    "build-ssr": "node scripts/build-ssr.js",
     "sw-hash": "node scripts/sw-hash.js",
+    "ssr": "node index.js",
     "lint": "yarn run eslint \"./**/*.@(tsx|ts|jsx|js)\""
   },
   "browserslist": {
@@ -53,6 +56,8 @@
   "devDependencies": {
     "@types/jest": "^26.0.0",
     "@types/node": "^12.0.0",
+    "connect": "^3.7.0",
+    "preact-render-to-string": "^5.1.10",
     "react-micro-frontend-scripts": "^3.1.0",
     "react-redux": "^7.2.0",
     "redux": "^4.0.5",
@@ -60,6 +65,7 @@
     "redux-thunk": "^2.3.0",
     "replace-in-file": "^6.1.0",
     "sanitize.css": "^11.0.1",
+    "serve-static": "^1.14.1",
     "workbox-webpack-plugin": "^5.1.3"
   },
   "dependencies": {

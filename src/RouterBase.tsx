@@ -6,7 +6,9 @@ import Home from './home';
 import Counter from './Counter';
 import Redirect from './Redirect';
 
-const RouterBase : FunctionalComponent = () => {
+type Props = { CLI_DATA?: any };
+
+const RouterBase : FunctionalComponent<Props> = () => {
   let currentUrl: string;
 
   const handleRoute = (e: RouterOnChangeArgs) => {
@@ -15,12 +17,14 @@ const RouterBase : FunctionalComponent = () => {
   };
 
   return (
-    <Router onChange={handleRoute}>
-      <Route path="/home" component={Home} />
-      <Route path="/app-example" component={AppExample} />
-      <Route path="/counter" component={Counter} />
-      <Redirect default to="/home" />
-    </Router>
+    <div id="root">
+      <Router onChange={handleRoute}>
+        <Route path="/home" component={Home} />
+        <Route path="/app-example" component={AppExample} />
+        <Route path="/counter" component={Counter} />
+        <Redirect default to="/home" />
+      </Router>
+    </div>
   );
 };
 
