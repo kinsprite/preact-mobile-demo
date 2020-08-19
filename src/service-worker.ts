@@ -17,10 +17,11 @@ if (typeof global.globalThis !== 'object') {
 // eslint-disable-next-line no-restricted-globals, no-underscore-dangle
 const manifests: {revision: string, url: string}[] = self.__WB_MANIFEST;
 const spaHtmlURL = '/index.html';
+const regexPrecache = /.+\.(css|js)$/;
 
 skipWaiting();
 clientsClaim();
-precacheAndRoute(manifests.filter((item) => item.url !== spaHtmlURL));
+precacheAndRoute(manifests.filter((item) => regexPrecache.test(item.url)));
 
 const spaHtmlItems = manifests.filter((item) => item.url === spaHtmlURL);
 const spaHtmlWithRev = `${spaHtmlURL}?v=${spaHtmlItems.length && spaHtmlItems[0].revision}`;
