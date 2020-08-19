@@ -53,7 +53,7 @@ function build() {
     entry: {
       // polyfill: scripts.resolvePath('src/polyfill'),
       // app: scripts.resolvePath('src/index'),
-      server: scripts.resolvePath('server/index'),
+      server: scripts.resolvePath('src/server/index'),
     },
     output: {
       ...config.output,

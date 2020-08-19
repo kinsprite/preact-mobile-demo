@@ -1,3 +1,4 @@
+/* eslint-disable import/prefer-default-export */
 async function getBooks() {
   return [{
     id: 1,
@@ -14,6 +15,6 @@ async function getBooks() {
   }];
 }
 
-module.exports = {
+export {
   getBooks,
 };

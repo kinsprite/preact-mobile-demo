@@ -1,20 +1,21 @@
 /* eslint-disable @typescript-eslint/no-var-requires, import/no-dynamic-require, import/no-extraneous-dependencies */
-const fs = require('fs');
-const http = require('http');
-const path = require('path');
-const URL = require('url');
+import * as fs from 'fs';
+import * as http from 'http';
+import * as path from 'path';
+import * as Url from 'url';
+
+import { h } from 'preact'; /** @jsx h */
 
 const connect = require('connect');
 const compression = require('compression');
 const serveStatic = require('serve-static');
-const { h } = require('preact'); /** @jsx h */
 const { renderToString } = require('preact-render-to-string');
 const bodyParser = require('body-parser');
 const { ChunkExtractor } = require('@loadable/server');
 
-// const rest = require('./rest');
+const { default: rest } = require('./rest');
 const db = require('./db');
-const { default: AppContainer } = require('../src/ssr');
+const { default: AppContainer } = require('../ssr');
 
 // const ssrModule = require(path.resolve('./dist-ssr/ssr.js'));
 // const ssrModule = require(path.resolve('./dist-ssr/ssr.js'));
@@ -50,8 +51,8 @@ const appHtmlMinSize = '<div id="root"></div>'.length;
 function renderHtml(req, res) {
   const url = req.url || '/';
 
-  global.history = {};
-  global.location = { ...URL.parse(url) };
+  (global as any).history = {};
+  (global as any).location = { ...Url.parse(url) };
   const backendData = db.getInitData();
 
   const ssrExtractor = new ChunkExtractor({ statsFile: ssrStats, entrypoints: ['server'] });
@@ -86,7 +87,7 @@ app.use(serveStatic('dist', { index: false }));
 app.use(serveStatic('public', { index: false }));
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(bodyParser.json());
-// app.use(rest.processRequest());
+app.use('/api', rest.processRequest());
 
 // respond to all requests
 app.use(renderHtml);

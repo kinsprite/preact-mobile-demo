@@ -1,3 +1,5 @@
+/* eslint-disable import/prefer-default-export */
+
 function getInitData(id) {
   return {
     // id,
@@ -15,6 +17,6 @@ function getInitData(id) {
   };
 }
 
-module.exports = {
+export {
   getInitData,
 };
