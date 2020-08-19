@@ -1,6 +1,6 @@
 import global from 'core-js/internals/global';
 
-import './store';
+import './redux/store';
 import AppContainer from './AppContainer';
 
 import './root.css';

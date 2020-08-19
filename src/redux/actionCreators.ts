@@ -1,7 +1,10 @@
 import {
   INCREMENT, DECREMENT, RESET,
-  SET_BOOKS, RELOAD_BOOKS,
+  SET_BOOKS,
+  // RELOAD_BOOKS,
 } from './actionTypes';
+
+import fetchBooks from '../service/fetchBooks';
 
 export function increaseAge() {
   return {
@@ -33,9 +36,16 @@ export function setBooks(books) {
   };
 }
 
+// export function reloadBooks() {
+//   return {
+//     type: RELOAD_BOOKS,
+//   };
+// }
+
 export function reloadBooks() {
-  return {
-    type: RELOAD_BOOKS,
+  return async (dispatch) => {
+    const books = await fetchBooks();
+    dispatch(setBooks(books));
   };
 }
 

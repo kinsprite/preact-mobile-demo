@@ -4,7 +4,7 @@ import {
   createStore as createStoreOriginal, applyMiddleware, compose,
 } from 'redux';
 import thunk from 'redux-thunk';
-import createSagaMiddleware from 'redux-saga';
+// import createSagaMiddleware from 'redux-saga';
 // import { createEpicMiddleware } from 'redux-observable';
 
 const composeEnhancers = process.env.NODE_ENV !== 'production'
@@ -14,11 +14,11 @@ const composeEnhancers = process.env.NODE_ENV !== 'production'
     // Specify extension’s options like name, actionsBlacklist, actionsCreators, serialize...
   }) : compose;
 
-const sagaMiddleware = createSagaMiddleware();
+// const sagaMiddleware = createSagaMiddleware();
 // const epicMiddleware = createEpicMiddleware();
 
 const enhancer = composeEnhancers(
-  applyMiddleware(thunk, sagaMiddleware),
+  applyMiddleware(thunk),
   // applyMiddleware(thunk, sagaMiddleware, epicMiddleware),
   // other store enhancers if any
 );
@@ -28,7 +28,7 @@ let globalStore: any;
 export function createStore(reducer: any, preloadedState?: any) {
   const store = {
     ...createStoreOriginal(reducer, preloadedState, enhancer),
-    runSaga: sagaMiddleware.run,
+    // runSaga: sagaMiddleware.run,
     // runEpic: epicMiddleware.run,
   };
   globalStore = store;

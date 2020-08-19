@@ -9,9 +9,9 @@ import Counter from './Counter';
 import UserContainer from './containers/UserContainer';
 import Redirect from './Redirect';
 
-import { createStore } from './store';
+import { createStore } from './redux/store';
 import reducers from './redux/reducers';
-import sagas from './saga';
+// import sagas from './saga';
 
 const BooksContainer = loadable(() => import('./containers/BooksContainer'));
 
@@ -26,7 +26,7 @@ const AppContainer : FunctionalComponent<Props> = ({ preloadedState }: Props) =>
   };
 
   const store = createStore(reducers, preloadedState);
-  sagas.forEach((saga) => store.runSaga(saga));
+  // sagas.forEach((saga) => store.runSaga(saga));
 
   return (
     <div id="root">
