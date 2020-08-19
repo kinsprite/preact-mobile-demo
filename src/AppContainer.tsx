@@ -1,17 +1,19 @@
 import { h, FunctionalComponent } from 'preact'; /** @jsx h */
 import { Route, Router, RouterOnChangeArgs } from 'preact-router';
 import { Provider } from 'react-redux';
+import loadable from '@loadable/component';
 
 import AppExample from './AppExample';
 import Home from './home';
 import Counter from './Counter';
 import UserContainer from './containers/UserContainer';
-import BooksContainer from './containers/BooksContainer';
 import Redirect from './Redirect';
 
 import { createStore } from './store';
 import reducers from './redux/reducers';
 import sagas from './saga';
+
+const BooksContainer = loadable(() => import('./containers/BooksContainer'));
 
 type Props = { CLI_DATA?: any, preloadedState?: any };
 

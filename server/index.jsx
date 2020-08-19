@@ -2,22 +2,26 @@
 const fs = require('fs');
 const http = require('http');
 const path = require('path');
+const URL = require('url');
 
 const connect = require('connect');
 const compression = require('compression');
 const serveStatic = require('serve-static');
-const URL = require('url');
-const preact = require('preact');
-const renderToString = require('preact-render-to-string');
+const { h } = require('preact'); /** @jsx h */
+const { renderToString } = require('preact-render-to-string');
 const bodyParser = require('body-parser');
+const { ChunkExtractor } = require('@loadable/server');
 
-const rest = require('./rest');
+// const rest = require('./rest');
 const db = require('./db');
+const { default: AppContainer } = require('../src/ssr');
 
-const ssrModule = require(path.resolve('./dist-ssr/ssr.js'));
+// const ssrModule = require(path.resolve('./dist-ssr/ssr.js'));
+// const ssrModule = require(path.resolve('./dist-ssr/ssr.js'));
+const ssrStats = path.resolve('./dist-server/loadable-stats.json');
 
 const indexFile = path.resolve('./dist/index.html');
-const AppContainer = (ssrModule && ssrModule.default) || ssrModule;
+// const AppContainer = (ssrModule && ssrModule.default) || ssrModule;
 
 function readIndexHtml() {
   const result = fs.readFileSync(indexFile, 'utf8');
@@ -50,7 +54,13 @@ function renderHtml(req, res) {
   global.location = { ...URL.parse(url) };
   const backendData = db.getInitData();
 
-  const appHtml = renderToString(preact.h(AppContainer, { url, preloadedState: backendData })) || '';
+  const ssrExtractor = new ChunkExtractor({ statsFile: ssrStats, entrypoints: ['server'] });
+  // const { default: AppContainer } = ssrExtractor.requireEntrypoint();
+  ssrExtractor.requireEntrypoint();
+  const jsx = ssrExtractor.collectChunks(<AppContainer url={url} preloadedState={backendData} />);
+  const appHtml = renderToString(jsx) || '';
+
+  // const appHtml = renderToString(preact.h(AppContainer, { url, preloadedState: backendData })) || '';
 
   if (appHtml.length <= appHtmlMinSize) {
     // default route
@@ -76,7 +86,7 @@ app.use(serveStatic('dist', { index: false }));
 app.use(serveStatic('public', { index: false }));
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(bodyParser.json());
-app.use(rest.processRequest());
+// app.use(rest.processRequest());
 
 // respond to all requests
 app.use(renderHtml);
