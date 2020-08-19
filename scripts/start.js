@@ -1,4 +1,5 @@
 const scripts = require('react-micro-frontend-scripts');
+const devServerBefore = require('./devServerBefore');
 
 function getSplitChunksOptions() {
   return {
@@ -45,6 +46,10 @@ function start() {
     },
     entry: {
       app: ['preact/debug', scripts.resolvePath('src/index')],
+    },
+    devServer: {
+      ...config.devServer,
+      before: devServerBefore,
     },
   }));
 }
