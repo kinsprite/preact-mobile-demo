@@ -13,7 +13,9 @@ import { createStore } from './redux/store';
 import reducers from './redux/reducers';
 // import sagas from './saga';
 
-const BooksContainer = loadable(() => import('./containers/BooksContainer'));
+const BooksContainer = loadable(() => import('./containers/BooksContainer'), {
+  fallback: <div>Loading...</div>,
+});
 
 type Props = { CLI_DATA?: any, preloadedState?: any };
 
