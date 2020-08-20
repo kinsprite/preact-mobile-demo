@@ -32,6 +32,8 @@ let globalStore: any;
 export function createStore(reducer: any, preloadedState?: any) {
   const store = {
     ...createStoreOriginal(reducer, preloadedState, enhancer),
+    runChan: chanMiddleware.run,
+    runOnceChan: chanMiddleware.runOnce,
     // runSaga: sagaMiddleware.run,
     // runEpic: epicMiddleware.run,
   };

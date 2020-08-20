@@ -6,9 +6,13 @@ export interface ChanHandler {
   (state?: any, action?: AnyAction, dispatch?: Dispatch, next?: () => void): void
 }
 
-export interface ChanHandlerOnce {
-  (state?: any, action?: AnyAction, dispatch?: Dispatch): void
+export interface ChanDefine {
+  type: string,
+  handler: ChanHandler,
+  once?: boolean,
 }
+
+const chanNextArgsRequired = 4;
 
 function createChanMiddleware(opts = {}) {
   const channels: {
@@ -51,7 +55,7 @@ function createChanMiddleware(opts = {}) {
     const wrapHandler: ChanHandler = (state, action, dispatch, next) => {
       removeHandler(type, wrapHandler);
       const argLen = handler.length;
-      if (argLen < 4) {
+      if (argLen < chanNextArgsRequired) {
         handler(state, action, dispatch);
         next();
       } else {
@@ -88,7 +92,7 @@ function createChanMiddleware(opts = {}) {
 
       const argLen = handler.length;
 
-      if (argLen < 4) {
+      if (argLen < chanNextArgsRequired) {
         handler(state, action, dispatch);
         next();
       } else {
