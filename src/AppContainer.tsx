@@ -11,8 +11,7 @@ import Redirect from './Redirect';
 
 import { createStore } from './redux/store';
 import reducers from './redux/reducers';
-import chan from './chan';
-// import sagas from './saga';
+import './chan';
 
 const BooksContainer = loadable(() => import('./containers/BooksContainer'), {
   fallback: <div>Loading...</div>,
@@ -29,16 +28,6 @@ const AppContainer : FunctionalComponent<Props> = ({ preloadedState }: Props) =>
   };
 
   const store = createStore(reducers, preloadedState);
-
-  chan.forEach((c) => {
-    if (c.once) {
-      store.runOnceChan(c.type, c.handler);
-    } else {
-      store.runChan(c.type, c.handler);
-    }
-  });
-
-  // sagas.forEach((saga) => store.runSaga(saga));
 
   return (
     <div id="root">
