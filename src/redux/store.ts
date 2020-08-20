@@ -4,8 +4,11 @@ import {
   createStore as createStoreOriginal, applyMiddleware, compose,
 } from 'redux';
 import thunk from 'redux-thunk';
+
 // import createSagaMiddleware from 'redux-saga';
 // import { createEpicMiddleware } from 'redux-observable';
+
+import createChanMiddleware from './chanMiddleware';
 
 const composeEnhancers = process.env.NODE_ENV !== 'production'
   && typeof window === 'object'
@@ -16,9 +19,10 @@ const composeEnhancers = process.env.NODE_ENV !== 'production'
 
 // const sagaMiddleware = createSagaMiddleware();
 // const epicMiddleware = createEpicMiddleware();
+const chanMiddleware = createChanMiddleware();
 
 const enhancer = composeEnhancers(
-  applyMiddleware(thunk),
+  applyMiddleware(thunk, chanMiddleware),
   // applyMiddleware(thunk, sagaMiddleware, epicMiddleware),
   // other store enhancers if any
 );
