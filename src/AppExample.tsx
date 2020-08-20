@@ -5,19 +5,18 @@ import { Link } from 'preact-router/match';
 import Counter from './Counter';
 
 import {
-  MessageHandlerNext,
   addNativeMessageHandler,
   removeNativeMessageHandler,
 } from './nativeMessage';
 
 import styles from './AppExample.module.scss';
+import { ChanHandler } from './redux/chanMiddleware';
 
 let nativeTick = 0;
 
-function globalTickHandler(msgId: string, payload: any, next?: MessageHandlerNext) {
+const globalTickHandler: ChanHandler = () => {
   nativeTick += 1;
-  next();
-}
+};
 
 addNativeMessageHandler('native_tick', globalTickHandler);
 
@@ -26,7 +25,7 @@ const AppExample: FunctionalComponent = () => {
   const [once] = useState(0);
 
   useEffect(() => {
-    const tickHandler = (msgId: string, payload) => {
+    const tickHandler: ChanHandler = () => {
       setCount(nativeTick);
     };
 

@@ -1,61 +1,23 @@
 // Handle message for Android Native
 
-import Util from './util';
+import { nativeMessage } from './redux/actionCreators';
+import { getStore, chanMiddleware } from './redux/store';
+import { ChanHandler } from './redux/chanMiddleware';
+import { NATIVE_MSG_PREFIX } from './redux/actionTypes';
 
-export interface MessageHandlerNext {
-  (): void
+function addNativeMessageHandler(msgId: string, handler: ChanHandler): void {
+  chanMiddleware.run(NATIVE_MSG_PREFIX + msgId, handler);
 }
 
-export interface MessageHandler {
-  (msgId: string, payload: any, next?: MessageHandlerNext)
+function addNativeMessageHandlerOnce(msgId: string, handler: ChanHandler): void {
+  chanMiddleware.runOnce(NATIVE_MSG_PREFIX + msgId, handler);
 }
 
-interface MessageHandlersMapType {
-  [msgId: string]: MessageHandler[]
-}
-
-const messageHandlersMap : MessageHandlersMapType = {
-};
-
-function addNativeMessageHandler(msgId: string, handler: MessageHandler): void {
-  if (!Util.isFunction(handler)) {
-    throw new Error('Message handler must be a function');
-  }
-
-  const handlers = messageHandlersMap[msgId];
-
-  if (handlers) {
-    const index = handlers.indexOf(handler);
-
-    if (index === -1) {
-      handlers.push(handler);
-    }
-
-    return;
-  }
-
-  messageHandlersMap[msgId] = [handler];
-}
-
-function removeNativeMessageHandler(msgId: string, handler: MessageHandler): void {
-  const handlers = messageHandlersMap[msgId];
-
-  if (handlers) {
-    const index = handlers.indexOf(handler);
-
-    if (index !== -1) {
-      handlers.splice(index, 1);
-    }
-  }
+function removeNativeMessageHandler(msgId: string, handler: ChanHandler): void {
+  chanMiddleware.unRun(NATIVE_MSG_PREFIX + msgId, handler);
 }
 
 function nativeMessageHandler(msgId: string, payload: string | null | undefined): void {
-  const handlers = [...(messageHandlersMap[''] || []), ...(messageHandlersMap[msgId] || [])];
-
-  if (handlers.length === 0) {
-    return;
-  }
-
   let payloadObj = payload;
 
   if (payload && typeof payload === 'string') {
@@ -66,27 +28,11 @@ function nativeMessageHandler(msgId: string, payload: string | null | undefined)
     }
   }
 
-  let i = 0;
+  const store = getStore();
 
-  const next = () => {
-    if (i >= handlers.length) {
-      return;
-    }
-
-    const handler = handlers[i];
-    i += 1;
-
-    const argLen = handler.length;
-
-    if (argLen === 2) {
-      handler(msgId, payloadObj);
-      next();
-    } else {
-      handler(msgId, payloadObj, next);
-    }
-  };
-
-  next();
+  if (store) {
+    store.dispatch(nativeMessage(msgId, payloadObj));
+  }
 }
 
 function logMessageToNative(msgId: string, payload: string): void {
@@ -104,6 +50,7 @@ function sendMessageToNative(msgId: string, payload?: string): void {
 
 export {
   addNativeMessageHandler,
+  addNativeMessageHandlerOnce,
   removeNativeMessageHandler,
   nativeMessageHandler as default,
   sendMessageToNative,

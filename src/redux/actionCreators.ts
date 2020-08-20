@@ -1,10 +1,20 @@
 import {
+  NATIVE_MSG_PREFIX,
   INCREMENT, DECREMENT, RESET,
   SET_BOOKS,
   RELOAD_BOOKS,
+  NativeMsgAction,
 } from './actionTypes';
 
 // import fetchBooks from '../service/fetchBooks';
+
+export function nativeMessage(msgId: string, payload): NativeMsgAction {
+  return {
+    type: NATIVE_MSG_PREFIX + msgId,
+    msgId,
+    payload,
+  };
+}
 
 export function increaseAge() {
   return {
