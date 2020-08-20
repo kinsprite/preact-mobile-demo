@@ -10,28 +10,13 @@
     <title>Preact Mobile Demo</title>
   </head>
   <body>
-    <noscript>You need to enable JavaScript to run this app.</noscript>
     <div id="root"></div>
+    <noscript>You need to enable JavaScript to run this app.</noscript>
     <script>
       var rmfMetadataJSONP = {apps:[], extra: {}};
       function rmfMetadataCallback(data) { rmfMetadataJSONP = data }
-    </script>
-    <script>
       // Register service worker to control making site work offline
       if ('serviceWorker' in navigator) {}
-
-      if ('Notification' in window) {
-        Notification.requestPermission(function (status) {
-          console.log('Notification permission status:', status);
-          if (Notification.permission == 'granted' && 'serviceWorker' in navigator) {
-            navigator.serviceWorker.ready.then(function (reg) {
-              console.log('Notification serviceWorker ready');
-              // TODO 2.4 - Add 'options' object to configure the notification
-              // reg.showNotification('Hello world!');
-            });
-          }
-        });
-      }
     </script>
   </body>
 </html>

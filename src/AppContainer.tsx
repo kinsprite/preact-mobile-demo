@@ -11,6 +11,7 @@ import Redirect from './Redirect';
 
 import { createStore } from './redux/store';
 import reducers from './redux/reducers';
+import { flushPreloadMessages } from './nativeMessage';
 import './chan';
 
 const BooksContainer = loadable(() => import('./containers/BooksContainer'), {
@@ -28,6 +29,7 @@ const AppContainer : FunctionalComponent<Props> = ({ preloadedState }: Props) =>
   };
 
   const store = createStore(reducers, preloadedState);
+  flushPreloadMessages(store.dispatch);
 
   return (
     <div id="root">

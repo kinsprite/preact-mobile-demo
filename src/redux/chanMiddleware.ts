@@ -55,6 +55,7 @@ function createChanMiddleware(opts = {}) {
     const wrapHandler: ChanHandler = (state, action, dispatch, next) => {
       removeHandler(type, wrapHandler);
       const argLen = handler.length;
+
       if (argLen < chanNextArgsRequired) {
         handler(state, action, dispatch);
         next();

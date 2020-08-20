@@ -1,9 +1,21 @@
 // Handle message for Android Native
 
+import { Dispatch } from 'redux';
 import { nativeMessage } from './redux/actionCreators';
 import { getStore, chanMiddleware } from './redux/store';
 import { ChanHandler } from './redux/chanMiddleware';
 import { NATIVE_MSG_PREFIX } from './redux/actionTypes';
+
+let preloadMessages: {msgId: string, payloadObj: any }[] = [];
+
+function flushPreloadMessages(dispatch: Dispatch) {
+  // eslint-disable-next-line no-underscore-dangle
+  const messages = (globalThis.__PRELOAD_NATIVE_MESSAGES__ || []).concat(...preloadMessages);
+  // eslint-disable-next-line no-underscore-dangle
+  globalThis.__PRELOAD_NATIVE_MESSAGES__ = [];
+  preloadMessages = [];
+  messages.forEach((m) => dispatch(nativeMessage(m.msgId, m.payloadObj)));
+}
 
 function addNativeMessageHandler(msgId: string, handler: ChanHandler): void {
   chanMiddleware.run(NATIVE_MSG_PREFIX + msgId, handler);
@@ -32,6 +44,8 @@ function nativeMessageHandler(msgId: string, payload: string | null | undefined)
 
   if (store) {
     store.dispatch(nativeMessage(msgId, payloadObj));
+  } else {
+    preloadMessages.push({ msgId, payloadObj });
   }
 }
 
@@ -44,11 +58,12 @@ const msgLogger = {
 };
 
 function sendMessageToNative(msgId: string, payload?: string): void {
-  const injectedNative = (window as any).injectedNative || msgLogger;
+  const injectedNative = (globalThis as any).injectedNative || msgLogger;
   injectedNative.sendMessage(msgId, payload || '');
 }
 
 export {
+  flushPreloadMessages,
   addNativeMessageHandler,
   addNativeMessageHandlerOnce,
   removeNativeMessageHandler,
