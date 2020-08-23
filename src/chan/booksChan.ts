@@ -1,8 +1,9 @@
 import { ChanHandler } from '../redux/chanMiddleware';
-import fetchBooks from '../service/fetchBooks';
 import { setBooks } from '../redux/actionCreators';
 import { RELOAD_BOOKS } from '../redux/actionTypes';
 import { chanMiddleware } from '../redux/store';
+
+import fetchBooks from '../service/fetchBooks';
 
 const reloadBooksHandler: ChanHandler = async (state, action, dispatch) => {
   const books = await fetchBooks();
