@@ -19,7 +19,7 @@ function createChanMiddleware(opts = {}) {
     [type: string]: ChanHandler[];
   } = {};
 
-  const addHandler = (type: string, handler: ChanHandler) => {
+  const use = (type: string, handler: ChanHandler) => {
     if (typeof handler !== 'function') {
       throw new Error('Channel handler must be a function');
     }
@@ -39,7 +39,7 @@ function createChanMiddleware(opts = {}) {
     channels[type] = [handler];
   };
 
-  const removeHandler = (type: string, handler: ChanHandler) => {
+  const unUse = (type: string, handler: ChanHandler) => {
     const handlers = channels[type];
 
     if (handlers) {
@@ -51,9 +51,9 @@ function createChanMiddleware(opts = {}) {
     }
   };
 
-  const addHandlerOnce = (type: string, handler: ChanHandler) => {
+  const useOnce = (type: string, handler: ChanHandler) => {
     const wrapHandler: ChanHandler = (state, action, dispatch, next) => {
-      removeHandler(type, wrapHandler);
+      unUse(type, wrapHandler);
       const argLen = handler.length;
 
       if (argLen < chanNextArgsRequired) {
@@ -64,7 +64,7 @@ function createChanMiddleware(opts = {}) {
       }
     };
 
-    addHandler(type, wrapHandler);
+    use(type, wrapHandler);
   };
 
   const dispatchChan = (store: Store, action: AnyAction) => {
@@ -110,9 +110,9 @@ function createChanMiddleware(opts = {}) {
     return result;
   };
 
-  chanMiddleware.run = addHandler;
-  chanMiddleware.runOnce = addHandlerOnce;
-  chanMiddleware.unRun = removeHandler;
+  chanMiddleware.use = use;
+  chanMiddleware.useOnce = useOnce;
+  chanMiddleware.unUse = unUse;
 
   return chanMiddleware;
 }

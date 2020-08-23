@@ -9,4 +9,4 @@ const reloadBooksHandler: ChanHandler = async (state, action, dispatch) => {
   dispatch(setBooks(books));
 };
 
-chanMiddleware.run(RELOAD_BOOKS, reloadBooksHandler);
+chanMiddleware.use(RELOAD_BOOKS, reloadBooksHandler);

@@ -15,7 +15,7 @@ const { ChunkExtractor } = require('@loadable/server');
 
 const { default: rest } = require('./rest');
 const db = require('./db');
-const { default: AppContainer } = require('../ssr');
+const { default: AppContainer } = require('../entry-server');
 
 // const ssrModule = require(path.resolve('./dist-ssr/ssr.js'));
 // const ssrModule = require(path.resolve('./dist-ssr/ssr.js'));

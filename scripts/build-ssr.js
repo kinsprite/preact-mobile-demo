@@ -64,7 +64,7 @@ function build() {
     entry: {
       // polyfill: scripts.resolvePath('src/polyfill'),
       // app: scripts.resolvePath('src/index'),
-      ssr: scripts.resolvePath('src/ssr'),
+      ssr: scripts.resolvePath('src/entry-server'),
     },
     output: {
       ...config.output,

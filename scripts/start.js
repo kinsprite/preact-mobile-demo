@@ -45,7 +45,7 @@ function start() {
       },
     },
     entry: {
-      app: ['preact/debug', scripts.resolvePath('src/index')],
+      app: ['preact/debug', scripts.resolvePath('src/entry-client')],
     },
     devServer: {
       ...config.devServer,

@@ -18,15 +18,15 @@ function flushPreloadMessages(dispatch: Dispatch) {
 }
 
 function addNativeMessageHandler(msgId: string, handler: ChanHandler): void {
-  chanMiddleware.run(NATIVE_MSG_PREFIX + msgId, handler);
+  chanMiddleware.use(NATIVE_MSG_PREFIX + msgId, handler);
 }
 
 function addNativeMessageHandlerOnce(msgId: string, handler: ChanHandler): void {
-  chanMiddleware.runOnce(NATIVE_MSG_PREFIX + msgId, handler);
+  chanMiddleware.useOnce(NATIVE_MSG_PREFIX + msgId, handler);
 }
 
 function removeNativeMessageHandler(msgId: string, handler: ChanHandler): void {
-  chanMiddleware.unRun(NATIVE_MSG_PREFIX + msgId, handler);
+  chanMiddleware.unUse(NATIVE_MSG_PREFIX + msgId, handler);
 }
 
 function nativeMessageHandler(msgId: string, payload: string | null | undefined): void {

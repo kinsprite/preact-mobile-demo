@@ -62,7 +62,7 @@ function build() {
     },
     entry: {
       polyfill: scripts.resolvePath('src/polyfill'),
-      app: scripts.resolvePath('src/index'),
+      app: scripts.resolvePath('src/entry-client'),
     },
   }));
 }
