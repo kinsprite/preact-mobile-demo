@@ -6,12 +6,6 @@ export interface ChanHandler {
   (state?: any, action?: AnyAction, dispatch?: Dispatch, next?: () => void): void
 }
 
-export interface ChanDefine {
-  type: string,
-  handler: ChanHandler,
-  once?: boolean,
-}
-
 const chanNextArgsRequired = 4;
 
 function createChanMiddleware(opts = {}) {
