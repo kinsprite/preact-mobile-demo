@@ -3,11 +3,13 @@ import { Route, Router, RouterOnChangeArgs } from 'preact-router';
 import { Provider } from 'react-redux';
 import loadable from '@loadable/component';
 
-import AppExample from './AppExample';
-import Home from './home';
-import Counter from './Counter';
+import Counter from './components/Counter';
+import Redirect from './components/Redirect';
+
+import Example from './containers/example';
+import Home from './containers/home';
+
 import UserContainer from './containers/UserContainer';
-import Redirect from './Redirect';
 
 import { createStore } from './redux/store';
 import reducers from './redux/reducers';
@@ -20,7 +22,7 @@ const BooksContainer = loadable(() => import('./containers/BooksContainer'), {
 
 type Props = { CLI_DATA?: any, preloadedState?: any };
 
-const AppContainer : FunctionalComponent<Props> = ({ preloadedState }: Props) => {
+const App : FunctionalComponent<Props> = ({ preloadedState }: Props) => {
   let currentUrl: string;
 
   const handleRoute = (e: RouterOnChangeArgs) => {
@@ -36,7 +38,7 @@ const AppContainer : FunctionalComponent<Props> = ({ preloadedState }: Props) =>
       <Provider store={store}>
         <Router onChange={handleRoute}>
           <Route path="/home" component={Home} />
-          <Route path="/app-example" component={AppExample} />
+          <Route path="/example" component={Example} />
           <Route path="/counter" component={Counter} />
           <Route path="/user" component={UserContainer} />
           <Route path="/books" component={BooksContainer} />
@@ -47,4 +49,4 @@ const AppContainer : FunctionalComponent<Props> = ({ preloadedState }: Props) =>
   );
 };
 
-export default AppContainer;
+export default App;

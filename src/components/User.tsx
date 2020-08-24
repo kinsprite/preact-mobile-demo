@@ -2,6 +2,8 @@ import {
   h, FunctionalComponent, Fragment,
 } from 'preact'; /** @jsx h */
 
+import controls from '../styles/controls.module.scss';
+
 type Props = {
   name: string;
   age: number;
@@ -14,7 +16,7 @@ const User: FunctionalComponent<Props> = ({
   name, age, increaseAge, decreaseAge, resetAge,
 }: Props) => (
   <Fragment>
-    <h1>
+    <h1 class={controls.h1}>
       Hello,
       {' '}
       { name }
@@ -25,9 +27,9 @@ const User: FunctionalComponent<Props> = ({
       {' '}
       { age }
       .
-      <button type="button" onClick={decreaseAge}>-1</button>
-      <button type="button" onClick={increaseAge}>+1</button>
-      <button type="button" onClick={resetAge}>Reset</button>
+      <button type="button" class={controls.btn} onClick={decreaseAge}>-1</button>
+      <button type="button" class={controls.btn} onClick={increaseAge}>+1</button>
+      <button type="button" class={controls.btn} onClick={resetAge}>Reset</button>
     </p>
   </Fragment>
 );

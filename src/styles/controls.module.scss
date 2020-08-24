@@ -1,0 +1,16 @@
+@import './var';
+
+.h1 {
+  color: $headTextColor
+}
+
+.btn {
+  margin: 0.16rem;
+  border-radius: 0.04rem;
+  cursor: pointer;
+  color: $btnTextColor;
+}
+
+.theadRow {
+  color: $headTextColor
+}

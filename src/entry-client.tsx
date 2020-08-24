@@ -3,9 +3,9 @@ import global from 'core-js/internals/global';
 
 import './redux/store';
 import nativeMessageHandler from './nativeMessage';
-import AppContainer from './AppContainer';
+import App from './App';
 
-import './root.css';
+import './styles/root.scss';
 
 global.nativeMessageHandler = nativeMessageHandler;
 
@@ -35,7 +35,7 @@ function init() {
             && currentURL === normalizeURL(document.location.pathname);
   console.log(`canHydrate is ${canHydrate}`); // eslint-disable-line
   const doRender = canHydrate ? hydrate : render;
-  doRender(h(AppContainer, { CLI_DATA, preloadedState }), document.body, root);
+  doRender(h(App, { CLI_DATA, preloadedState }), document.body, root);
 }
 
 function notification() {

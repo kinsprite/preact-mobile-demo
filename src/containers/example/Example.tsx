@@ -2,15 +2,15 @@ import { FunctionalComponent, h } from 'preact'; /** @jsx h */
 import { useState, useEffect } from 'preact/hooks';
 import { Link } from 'preact-router/match';
 
-import Counter from './Counter';
+import Counter from '../../components/Counter';
 
 import {
   addNativeMessageHandler,
   removeNativeMessageHandler,
-} from './nativeMessage';
+} from '../../nativeMessage';
 
-import styles from './AppExample.module.scss';
-import { ChanHandler } from './redux/chanMiddleware';
+import styles from './Example.module.scss';
+import { ChanHandler } from '../../redux/chanMiddleware';
 
 let nativeTick = 0;
 
@@ -20,7 +20,7 @@ const globalTickHandler: ChanHandler = () => {
 
 addNativeMessageHandler('native_tick', globalTickHandler);
 
-const AppExample: FunctionalComponent = () => {
+const ExampleApp: FunctionalComponent = () => {
   const [count, setCount] = useState(nativeTick);
   const [once] = useState(0);
 
@@ -40,7 +40,7 @@ const AppExample: FunctionalComponent = () => {
           <Link href="/home" class={styles.AppLink}>Home</Link>
         </li>
         <li>
-          <Link href="/app-example" class={styles.AppLink}>App Example</Link>
+          <Link href="/example" class={styles.AppLink}>Example</Link>
         </li>
       </ul>
       <p>
@@ -53,4 +53,4 @@ const AppExample: FunctionalComponent = () => {
   );
 };
 
-export default AppExample;
+export default ExampleApp;

@@ -15,7 +15,7 @@ const { ChunkExtractor } = require('@loadable/server');
 
 const { default: rest } = require('./rest');
 const db = require('./db');
-const { default: AppContainer } = require('../entry-server');
+const { default: App } = require('../entry-server');
 
 // const ssrModule = require(path.resolve('./dist-ssr/ssr.js'));
 // const ssrModule = require(path.resolve('./dist-ssr/ssr.js'));
@@ -58,7 +58,7 @@ function renderHtml(req, res) {
   const ssrExtractor = new ChunkExtractor({ statsFile: ssrStats, entrypoints: ['server'] });
   // const { default: AppContainer } = ssrExtractor.requireEntrypoint();
   ssrExtractor.requireEntrypoint();
-  const jsx = ssrExtractor.collectChunks(<AppContainer url={url} preloadedState={backendData} />);
+  const jsx = ssrExtractor.collectChunks(<App url={url} preloadedState={backendData} />);
   const appHtml = renderToString(jsx) || '';
 
   // const appHtml = renderToString(preact.h(AppContainer, { url, preloadedState: backendData })) || '';

@@ -1,12 +1,12 @@
 import global from 'core-js/internals/global';
 
 import './redux/store';
-import AppContainer from './AppContainer';
+import App from './App';
 
-import './root.css';
+import './styles/root.scss';
 
 if (typeof global.globalThis !== 'object') {
   global.globalThis = global;
 }
 
-export default AppContainer;
+export default App;

@@ -2,6 +2,8 @@ import {
   h, FunctionalComponent, Fragment,
 } from 'preact'; /** @jsx h */
 
+import controls from '../styles/controls.module.scss';
+
 type BookItem = {
   id: number,
   name: string,
@@ -20,7 +22,7 @@ const Books: FunctionalComponent<Props> = ({
   <Fragment>
     <table>
       <thead>
-        <tr>
+        <tr class={controls.theadRow}>
           <th>ID</th>
           <th>Name</th>
           <th>ISBN</th>
@@ -37,8 +39,8 @@ const Books: FunctionalComponent<Props> = ({
       </tbody>
     </table>
     <div>
-      <button type="button" onClick={reload}>Reload</button>
-      <button type="button" onClick={clear}>Clear</button>
+      <button type="button" class={controls.btn} onClick={reload}>Reload</button>
+      <button type="button" class={controls.btn} onClick={clear}>Clear</button>
     </div>
   </Fragment>
 );

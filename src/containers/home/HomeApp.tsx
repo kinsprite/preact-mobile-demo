@@ -8,7 +8,7 @@ import {
   addNativeMessageHandler,
   removeNativeMessageHandler,
   sendMessageToNative,
-} from '../nativeMessage';
+} from '../../nativeMessage';
 
 function toastShow() {
   sendMessageToNative('toast_show', 'Text from home page');
@@ -52,7 +52,7 @@ const HomeApp : FunctionalComponent = () => {
             <Link href="/home" class={styles.AppLink}>Home</Link>
           </li>
           <li>
-            <Link href="/app-example" class={styles.AppLink}>App Example</Link>
+            <Link href="/example" class={styles.AppLink}>Example</Link>
           </li>
           <li>
             <Link href="/user" class={styles.AppLink}>User</Link>
