@@ -4,7 +4,7 @@
 }
 
 .App {
-  background-color: bisque;
+  /* background-color: bisque; */
 }
 
 .AppLogoCont {
@@ -25,7 +25,6 @@
 
 .AppHeader {
   position: relative;
-  background-color: #282c34;
   min-height: calc(100vh - var(--footerHeight));
   display: flex;
   flex-direction: column;
@@ -35,7 +34,6 @@
 }
 
 .AppFooter {
-  background-color: #282c34;
   min-height: var(--footerHeight);
   display: flex;
   flex-direction: row;
