@@ -1,0 +1,17 @@
+// Controls Mixin
+
+@import './var';
+
+@mixin button($color: $btn-color) {
+  margin: 0.08rem;
+  border-radius: 0.04rem;
+  height: 0.40rem;
+  line-height: 0.32rem;
+  padding: 0.04rem 0.08rem;
+  cursor: pointer;
+  color: $color;
+
+  &:focus {
+    box-shadow: 0 0 0 1px $color;
+  }
+}

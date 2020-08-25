@@ -2,7 +2,7 @@ import { FunctionalComponent, h } from 'preact'; /** @jsx h */
 import { useState, useEffect } from 'preact/hooks';
 import { Link } from 'preact-router/match';
 
-import styles from './HomeApp.module.css';
+import styles from './HomeApp.module.scss';
 
 import {
   addNativeMessageHandler,
@@ -39,7 +39,7 @@ const HomeApp : FunctionalComponent = () => {
   }, [once]);
 
   return (
-    <div class={styles.App}>
+    <div>
       <header class={styles.AppHeader}>
         <div class={styles.BtnGroup}>
           <button type="button" onClick={toastShow}>Toast</button>

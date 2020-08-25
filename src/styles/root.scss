@@ -4,7 +4,7 @@
 @import './var';
 
 html {
-  background-color: $bgColor;
+  background-color: $bg-color;
   font-size: 100px;
   font-size: 13.88888889vw;
   width: 100%;
@@ -14,5 +14,13 @@ body {
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   font-size: 0.24rem;
-  color: $bodyTextColor;
+  color: $body-color;
+}
+
+h1, h2, h3, h4, h5, h6 {
+  color: $head-color
+}
+
+:focus {
+  outline: none;
 }

@@ -1,3 +1,5 @@
+@import '../styles/controls-mixin';
+
 .row {
   display: flex;
   flex-direction: row;
@@ -5,12 +7,10 @@
 }
 
 .label {
-  margin: 0.8em 0.8em 0 0;
+  margin: 0.16rem 0.16rem 0 0;
 }
 
 .btn {
-  width: 4em;
-  margin: 0.4em 0.8em 0;
-  border-radius: 0.25rem;
-  cursor: pointer;
+  @include button($btn-color);
+  width: 0.64rem;
 }
