@@ -15,6 +15,7 @@ import { createStore } from './redux/store';
 import reducers from './redux/reducers';
 import { flushPreloadMessages } from './nativeMessage';
 import './chan';
+import NavbarContainer from './containers/NavbarContainer';
 
 const BooksContainer = loadable(() => import('./containers/BooksContainer'), {
   fallback: <div>Loading...</div>,
@@ -36,6 +37,7 @@ const App : FunctionalComponent<Props> = ({ preloadedState }: Props) => {
   return (
     <div id="root">
       <Provider store={store}>
+        <NavbarContainer />
         <Router onChange={handleRoute}>
           <Route path="/home" component={Home} />
           <Route path="/example" component={Example} />

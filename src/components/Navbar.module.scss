@@ -1,0 +1,32 @@
+@import '../styles/var';
+
+.navbar {
+  height: $nav-height;
+  padding: 0.16rem 0;
+
+  li {
+    display: inline-block;
+  }
+}
+
+.link {
+  margin: 0 0.12rem;
+  padding: 0 0.04rem;
+  color: $link-color;
+  text-decoration: none;
+
+  &.active {
+    color: $active-color;
+    position: relative;
+
+    &::after {
+      content: "";
+      position: absolute;
+      left: 0.02rem;
+      bottom: -0.04rem;
+      width: calc(100% - 0.04rem);
+      border-bottom: $active-color 0.02rem solid;
+    }
+  }
+}
+

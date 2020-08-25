@@ -1,6 +1,5 @@
 import { FunctionalComponent, h } from 'preact'; /** @jsx h */
 import { useState, useEffect } from 'preact/hooks';
-import { Link } from 'preact-router/match';
 
 import styles from './HomeApp.module.scss';
 
@@ -47,20 +46,6 @@ const HomeApp : FunctionalComponent = () => {
           <button type="button" onClick={vibratorNotify}>Vibrator</button>
           <button type="button" onClick={eventRound}>Event Round</button>
         </div>
-        <ul>
-          <li>
-            <Link href="/home" class={styles.AppLink}>Home</Link>
-          </li>
-          <li>
-            <Link href="/example" class={styles.AppLink}>Example</Link>
-          </li>
-          <li>
-            <Link href="/user" class={styles.AppLink}>User</Link>
-          </li>
-          <li>
-            <Link href="/books" class={styles.AppLink}>Books</Link>
-          </li>
-        </ul>
       </header>
       <footer class={styles.AppFooter}>
         <a
@@ -73,7 +58,7 @@ const HomeApp : FunctionalComponent = () => {
         </a>
         <a
           class={styles.FooterLink}
-          href="https://qinzhiqiang.cn"
+          href="https://qinzhiqiang.cn/tags/%E5%BE%AE%E5%89%8D%E7%AB%AF"
           target="_blank"
           rel="noopener noreferrer"
         >

@@ -13,7 +13,7 @@ const Counter: FunctionalComponent = () => {
   }, [once]);
 
   return (
-    <div className={styles.row}>
+    <div>
       <span className={styles.label}>
         {' '}
         Count:
