@@ -58,15 +58,17 @@ function renderHtml(req, res) {
   const ssrExtractor = new ChunkExtractor({ statsFile: ssrStats, entrypoints: ['server'] });
   // const { default: AppContainer } = ssrExtractor.requireEntrypoint();
   ssrExtractor.requireEntrypoint();
-  const jsx = ssrExtractor.collectChunks(<App url={url} preloadedState={backendData} />);
+
+  const routeContent = { url: '' };
+  const jsx = ssrExtractor.collectChunks(<App url={url} preloadedState={backendData} routeContent={routeContent} />);
   const appHtml = renderToString(jsx) || '';
 
   // const appHtml = renderToString(preact.h(AppContainer, { url, preloadedState: backendData })) || '';
 
-  if (appHtml.length <= appHtmlMinSize) {
+  if (routeContent.url) {
     // default route
     res.writeHead(302, {
-      Location: '/home',
+      Location: routeContent.url,
     });
     res.end();
   } else {
@@ -93,5 +95,5 @@ app.use('/api', rest.processRequest());
 app.use(renderHtml);
 
 // create node.js http server and listen on port
-console.log('Listen on: http://127.0.0.1:3000'); // eslint-disable-line
-http.createServer(app).listen(3000);
+console.log('Listen on: http://127.0.0.1:9090'); // eslint-disable-line
+http.createServer(app).listen(9090);

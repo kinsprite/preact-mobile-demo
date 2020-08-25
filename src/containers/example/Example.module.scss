@@ -1,6 +1,7 @@
+@import '../../styles/var';
 
 .AppExample {
-  margin: 0.5em;
+  margin: $content-margin;
 }
 
 .AppLink {

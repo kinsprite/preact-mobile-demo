@@ -1,8 +1,9 @@
 import {
-  h, FunctionalComponent, Fragment,
+  h, FunctionalComponent,
 } from 'preact'; /** @jsx h */
 
 import controls from '../styles/controls.module.scss';
+import layout from '../styles/layout.module.scss';
 
 type BookItem = {
   id: number,
@@ -19,7 +20,7 @@ type Props = {
 const Books: FunctionalComponent<Props> = ({
   items, reload, clear,
 }: Props) => (
-  <Fragment>
+  <div class={layout.content}>
     <table>
       <thead>
         <tr class={controls.theadRow}>
@@ -42,7 +43,7 @@ const Books: FunctionalComponent<Props> = ({
       <button type="button" class={controls.btn} onClick={reload}>Reload</button>
       <button type="button" class={controls.btn} onClick={clear}>Clear</button>
     </div>
-  </Fragment>
+  </div>
 );
 
 export default Books;

@@ -2,7 +2,7 @@
 
 .navbar {
   height: $nav-height;
-  padding: 0.16rem 0;
+  padding: $content-margin 0;
 
   li {
     display: inline-block;

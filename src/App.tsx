@@ -17,13 +17,19 @@ import { flushPreloadMessages } from './nativeMessage';
 import './chan';
 import NavbarContainer from './containers/NavbarContainer';
 
+import styles from './App.module.scss';
+
 const BooksContainer = loadable(() => import('./containers/BooksContainer'), {
   fallback: <div>Loading...</div>,
 });
 
-type Props = { CLI_DATA?: any, preloadedState?: any };
+type Props = {
+  CLI_DATA?: any,
+  preloadedState?: any,
+  routeContent?: any,
+};
 
-const App : FunctionalComponent<Props> = ({ preloadedState }: Props) => {
+const App : FunctionalComponent<Props> = ({ preloadedState, routeContent }: Props) => {
   let currentUrl: string;
 
   const handleRoute = (e: RouterOnChangeArgs) => {
@@ -35,7 +41,7 @@ const App : FunctionalComponent<Props> = ({ preloadedState }: Props) => {
   flushPreloadMessages(store.dispatch);
 
   return (
-    <div id="root">
+    <div id="root" class={styles.root}>
       <Provider store={store}>
         <NavbarContainer />
         <Router onChange={handleRoute}>
@@ -44,7 +50,7 @@ const App : FunctionalComponent<Props> = ({ preloadedState }: Props) => {
           <Route path="/counter" component={Counter} />
           <Route path="/user" component={UserContainer} />
           <Route path="/books" component={BooksContainer} />
-          <Redirect default to="/home" />
+          <Redirect default to="/home" routeContent={routeContent} />
         </Router>
       </Provider>
     </div>

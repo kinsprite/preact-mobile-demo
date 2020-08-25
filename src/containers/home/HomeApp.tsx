@@ -50,11 +50,11 @@ const HomeApp : FunctionalComponent = () => {
       <footer class={styles.AppFooter}>
         <a
           class={styles.FooterLink}
-          href="https://reactjs.org"
+          href="https://preactjs.com/"
           target="_blank"
           rel="noopener noreferrer"
         >
-          Learn React
+          Learn Preact
         </a>
         <a
           class={styles.FooterLink}

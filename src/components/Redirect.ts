@@ -1,17 +1,18 @@
 import { FunctionalComponent } from 'preact';
-import { useLayoutEffect } from 'preact/hooks';
 import { route } from 'preact-router';
 
 interface Props {
   to: string;
-  [key:string]: any,
+  routeContent: any;
+  [key:string]: any;
 }
 
-const Redirect: FunctionalComponent<Props> = (props: Props) => {
-  useLayoutEffect(() => {
-    route(props.to, true);
-  }, []);
+const Redirect: FunctionalComponent<Props> = ({ to, routeContent }: Props) => {
+  if (routeContent) {
+    routeContent.url = to; // eslint-disable-line no-param-reassign
+  }
 
+  route(to, true);
   return null;
 };
 
