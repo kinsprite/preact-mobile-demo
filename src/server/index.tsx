@@ -82,8 +82,12 @@ function renderHtml(req, res) {
 const app = connect();
 
 app.use(compression());
-app.use(serveStatic('dist', { index: false }));
-app.use(serveStatic('public', { index: false }));
+
+if (process.env.ENABLE_SERVE_STATIC) {
+  app.use(serveStatic('dist', { index: false }));
+  app.use(serveStatic('public', { index: false }));
+}
+
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(bodyParser.json());
 app.use('/api', rest.processRequest());
