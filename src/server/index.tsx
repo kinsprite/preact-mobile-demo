@@ -5,6 +5,7 @@ import * as path from 'path';
 import * as Url from 'url';
 
 import { h } from 'preact'; /** @jsx h */
+import distRootArg from './distRootArg';
 
 const connect = require('connect');
 const compression = require('compression');
@@ -17,9 +18,14 @@ const { default: rest } = require('./rest');
 const db = require('./db');
 const { default: App } = require('../entry-server');
 
-const ssrStats = path.resolve('./dist-server/loadable-stats.json');
-const indexFile = path.resolve('./dist/index.html');
-const outputPath = path.resolve('./dist-server');
+const distRoot = distRootArg() || '.';
+console.log('Dist root: ', distRoot); // eslint-disable-line no-console
+
+const clientStats = path.resolve(`${distRoot}/dist/loadable-stats.json`);
+const ssrStats = path.resolve(`${distRoot}/dist-server/loadable-stats.json`);
+const indexFile = path.resolve(`${distRoot}/dist/index.html`);
+const clientOutputPath = path.resolve(`${distRoot}/dist`);
+const ssrOutputPath = path.resolve(`${distRoot}/dist-server`);
 
 function readIndexHtml() {
   const result = fs.readFileSync(indexFile, 'utf8');
@@ -39,6 +45,22 @@ function readIndexHtml() {
 
 const indexHtml = readIndexHtml();
 
+function getHeaderLinkContent(mainAssets: {scriptType: 'script' | 'style', url: string}[]) {
+  // Link: </style.css>; as=style; rel=preload, </favicon.ico>; as=image; rel=preload
+  let linkContent = '';
+
+  mainAssets.filter((asset) => asset.scriptType === 'script' || asset.scriptType === 'style')
+    .forEach((asset) => {
+      if (linkContent) {
+        linkContent += ', ';
+      }
+
+      linkContent += `<${asset.url}>; as=${asset.scriptType}; rel=preload`;
+    });
+
+  return linkContent;
+}
+
 /**
  * render HTML
  * @param {http.IncomingMessage} req
@@ -54,7 +76,7 @@ function renderHtml(req, res) {
   const ssrExtractor = new ChunkExtractor({
     statsFile: ssrStats,
     entrypoints: ['server'],
-    outputPath,
+    outputPath: ssrOutputPath,
   });
   ssrExtractor.requireEntrypoint();
 
@@ -69,11 +91,25 @@ function renderHtml(req, res) {
     });
     res.end();
   } else {
+    const clientExtractor = new ChunkExtractor({
+      statsFile: clientStats,
+      entrypoints: ['polyfill', 'app'],
+      outputPath: clientOutputPath,
+    });
+
     const cliData = encodeURI(JSON.stringify({ preRenderData: { url } }));
     const cliDataHtml = `<script type="__PREACT_CLI_DATA__">${cliData}</script>`;
     const backendDataHtml = `<script>window.__BACKEND_DATA__ = ${JSON.stringify(backendData)};</script>`;
     const html = indexHtml.replace('<div id="root"></div>', cliDataHtml + backendDataHtml + appHtml);
     res.setHeader('Content-Type', 'text/html; charset=utf-8');
+
+    // Server push header: Link: </style.css>; as=style; rel=preload, </favicon.ico>; as=image; rel=preload
+    const linkContent = getHeaderLinkContent(clientExtractor.getMainAssets());
+
+    if (linkContent) {
+      res.setHeader('Link', linkContent);
+    }
+
     res.write(html);
     res.end();
   }
