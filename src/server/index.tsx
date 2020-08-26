@@ -97,4 +97,4 @@ app.use(renderHtml);
 
 // create node.js http server and listen on port
 console.log('Listen on: http://127.0.0.1:9090'); // eslint-disable-line
-http.createServer(app).listen(9090);
+http.createServer(app).listen(9090, '127.0.0.1');
