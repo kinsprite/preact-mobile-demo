@@ -50,6 +50,8 @@ const pwaFileNames = [
   'logo192.png',
   'logo512.png',
   'pwa.webmanifest',
+  '404.html',
+  'robots.txt',
 ];
 
 pwaFileNames.forEach((fileName) => {
