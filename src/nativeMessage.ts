@@ -6,16 +6,12 @@ import { getStore, chanMiddleware } from './redux/store';
 import { ChanHandler } from './redux/chanMiddleware';
 import { NATIVE_MSG_PREFIX } from './redux/actionTypes';
 
-let preloadMessages: {msgId: string, payloadObj: any }[] = [];
+type PreloadMsgType = {
+  msgId: string;
+  payload: string;
+};
 
-function flushPreloadMessages(dispatch: Dispatch) {
-  // eslint-disable-next-line no-underscore-dangle
-  const messages = (globalThis.__PRELOAD_NATIVE_MESSAGES__ || []).concat(...preloadMessages);
-  // eslint-disable-next-line no-underscore-dangle
-  globalThis.__PRELOAD_NATIVE_MESSAGES__ = [];
-  preloadMessages = [];
-  messages.forEach((m) => dispatch(nativeMessage(m.msgId, m.payloadObj)));
-}
+let preloadMessages: PreloadMsgType[] = [];
 
 function addNativeMessageHandler(msgId: string, handler: ChanHandler): void {
   chanMiddleware.use(NATIVE_MSG_PREFIX + msgId, handler);
@@ -30,6 +26,13 @@ function removeNativeMessageHandler(msgId: string, handler: ChanHandler): void {
 }
 
 function nativeMessageHandler(msgId: string, payload: string | null | undefined): void {
+  const store = getStore();
+
+  if (!store) {
+    preloadMessages.push({ msgId, payload });
+    return;
+  }
+
   let payloadObj = payload;
 
   if (payload && typeof payload === 'string') {
@@ -40,13 +43,21 @@ function nativeMessageHandler(msgId: string, payload: string | null | undefined)
     }
   }
 
-  const store = getStore();
+  store.dispatch(nativeMessage(msgId, payloadObj));
+}
 
-  if (store) {
-    store.dispatch(nativeMessage(msgId, payloadObj));
-  } else {
-    preloadMessages.push({ msgId, payloadObj });
+function flushPreloadMessages(dispatch: Dispatch) {
+  if (!getStore()) {
+    return;
   }
+
+  // eslint-disable-next-line no-underscore-dangle
+  const messages: PreloadMsgType[] = (globalThis.__PRELOAD_NATIVE_MESSAGES__ || []).concat(...preloadMessages);
+  // eslint-disable-next-line no-underscore-dangle
+  globalThis.__PRELOAD_NATIVE_MESSAGES__ = [];
+  preloadMessages = [];
+
+  messages.forEach((m) => nativeMessageHandler(m.msgId, m.payload));
 }
 
 function logMessageToNative(msgId: string, payload: string): void {
@@ -63,10 +74,10 @@ function sendMessageToNative(msgId: string, payload?: string): void {
 }
 
 export {
-  flushPreloadMessages,
   addNativeMessageHandler,
   addNativeMessageHandlerOnce,
   removeNativeMessageHandler,
   nativeMessageHandler as default,
+  flushPreloadMessages,
   sendMessageToNative,
 };

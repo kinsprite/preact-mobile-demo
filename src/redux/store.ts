@@ -27,7 +27,7 @@ const enhancer = composeEnhancers(
   // other store enhancers if any
 );
 
-let globalStore: Store;
+let globalStore: Store = null;
 
 export function createStore(reducer: any, preloadedState?: any) {
   const store = createStoreOriginal(reducer, preloadedState, enhancer);
