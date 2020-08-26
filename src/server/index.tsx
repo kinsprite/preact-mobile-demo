@@ -17,12 +17,9 @@ const { default: rest } = require('./rest');
 const db = require('./db');
 const { default: App } = require('../entry-server');
 
-// const ssrModule = require(path.resolve('./dist-ssr/ssr.js'));
-// const ssrModule = require(path.resolve('./dist-ssr/ssr.js'));
 const ssrStats = path.resolve('./dist-server/loadable-stats.json');
-
 const indexFile = path.resolve('./dist/index.html');
-// const AppContainer = (ssrModule && ssrModule.default) || ssrModule;
+const outputPath = path.resolve('./dist-server');
 
 function readIndexHtml() {
   const result = fs.readFileSync(indexFile, 'utf8');
@@ -41,7 +38,6 @@ function readIndexHtml() {
 }
 
 const indexHtml = readIndexHtml();
-const appHtmlMinSize = '<div id="root"></div>'.length;
 
 /**
  * render HTML
@@ -55,15 +51,16 @@ function renderHtml(req, res) {
   (global as any).location = { ...Url.parse(url) };
   const backendData = db.getInitData();
 
-  const ssrExtractor = new ChunkExtractor({ statsFile: ssrStats, entrypoints: ['server'] });
-  // const { default: AppContainer } = ssrExtractor.requireEntrypoint();
+  const ssrExtractor = new ChunkExtractor({
+    statsFile: ssrStats,
+    entrypoints: ['server'],
+    outputPath,
+  });
   ssrExtractor.requireEntrypoint();
 
   const routeContent = { url: '' };
   const jsx = ssrExtractor.collectChunks(<App url={url} preloadedState={backendData} routeContent={routeContent} />);
   const appHtml = renderToString(jsx) || '';
-
-  // const appHtml = renderToString(preact.h(AppContainer, { url, preloadedState: backendData })) || '';
 
   if (routeContent.url) {
     // default route

@@ -37,10 +37,6 @@ function build() {
     },
     externals: {
       // preact: 'preact',
-      fs: 'fs',
-      http: 'http',
-      path: 'path',
-      url: 'url',
     },
     resolve: {
       ...config.resolve,
