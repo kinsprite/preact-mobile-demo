@@ -2,7 +2,7 @@ import { FunctionalComponent, h } from 'preact'; /** @jsx h */
 import Navbar from '../components/Navbar';
 
 const routes = [{
-  href: '/home',
+  href: '/',
   text: 'Home',
 }, {
   href: '/example',

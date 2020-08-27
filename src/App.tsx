@@ -45,12 +45,12 @@ const App : FunctionalComponent<Props> = ({ preloadedState, routeContent }: Prop
       <Provider store={store}>
         <NavbarContainer />
         <Router onChange={handleRoute}>
-          <Route path="/home" component={Home} />
+          <Route path="/" component={Home} />
           <Route path="/example" component={Example} />
           <Route path="/counter" component={Counter} />
           <Route path="/user" component={UserContainer} />
           <Route path="/books" component={BooksContainer} />
-          <Redirect default to="/home" routeContent={routeContent} />
+          <Redirect default to="/" routeContent={routeContent} />
         </Router>
       </Provider>
     </div>
