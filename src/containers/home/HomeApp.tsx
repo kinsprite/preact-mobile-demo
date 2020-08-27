@@ -8,6 +8,8 @@ import {
   removeNativeMessageHandler,
   sendMessageToNative,
 } from '../../nativeMessage';
+import { ChanHandler } from '../../redux/chanMiddleware';
+import { NativeMsgAction } from '../../redux/actionTypes';
 
 function toastShow() {
   sendMessageToNative('toast_show', 'Text from home page');
@@ -25,9 +27,9 @@ function eventRound() {
   sendMessageToNative('event_round');
 }
 
-function eventRoundBackHandler(msgId: string, payload): void {
-  sendMessageToNative('toast_show', `Home received msg "${msgId}" from native`);
-}
+const eventRoundBackHandler: ChanHandler = (state, action: NativeMsgAction) => {
+  sendMessageToNative('toast_show', `Home received msg "${action.msgId}" from native`);
+};
 
 const HomeApp : FunctionalComponent = () => {
   const [once] = useState(0);
