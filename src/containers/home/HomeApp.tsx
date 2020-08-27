@@ -40,12 +40,10 @@ const HomeApp : FunctionalComponent = () => {
   return (
     <div>
       <header class={styles.AppHeader}>
-        <div class={styles.BtnGroup}>
-          <button type="button" onClick={toastShow}>Toast</button>
-          <button type="button" onClick={cameraOpen}>Camera</button>
-          <button type="button" onClick={vibratorNotify}>Vibrator</button>
-          <button type="button" onClick={eventRound}>Event Round</button>
-        </div>
+        <button type="button" onClick={toastShow}>Toast</button>
+        <button type="button" onClick={cameraOpen}>Camera</button>
+        <button type="button" onClick={vibratorNotify}>Vibrator</button>
+        <button type="button" onClick={eventRound}>Event Round</button>
       </header>
       <footer class={styles.AppFooter}>
         <a

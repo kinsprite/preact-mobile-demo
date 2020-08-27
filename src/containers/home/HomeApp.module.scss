@@ -10,6 +10,12 @@
   align-items: center;
   justify-content: center;
   color: white;
+
+  > button {
+    @include button;
+    display: block;
+    min-width: 8em;
+  }
 }
 
 .AppFooter {
@@ -19,16 +25,6 @@
   align-items: center;
   justify-content: space-between;
   color: white;
-}
-
-.BtnGroup > button {
-  @include button;
-  display: block;
-  min-width: 8em;
-}
-
-.AppLink {
-  color: #61dafb;
 }
 
 .FooterLink {
